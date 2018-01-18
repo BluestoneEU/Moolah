@@ -112,11 +112,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Moolah\Moolah.csproj">
-      <Project>{936F3798-9957-483E-8649-78C16B368FB7}</Project>
+      <Project>{936f3798-9957-483e-8649-78c16b368fb7}</Project>
       <Name>Moolah</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
