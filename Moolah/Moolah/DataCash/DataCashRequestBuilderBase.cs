@@ -8,7 +8,7 @@ namespace Moolah.DataCash
 {
     public interface IDataCashPaymentRequestBuilder
     {
-        XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, BillingAddress billingAddress);
+        XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012);
     }
 
     public interface IDataCashAuthorizeRequestBuilder
@@ -60,35 +60,40 @@ namespace Moolah.DataCash
             return new XElement("Transaction", elements);
         }
 
-        protected virtual XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode)
+        protected virtual XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012)
         {
             var amountElement = new XElement("amount", amount.ToString("0.00"));
             if (!string.IsNullOrWhiteSpace(currencyCode))
                 amountElement.Add(new XAttribute("currency", currencyCode));
-
-            return new XElement("TxnDetails",
+            
+            var root = new XElement("TxnDetails",
                 new XElement("merchantreference", merchantReference),
                 amountElement);
+
+            if (mcc6012 != null)
+                root.Add(mcc6012.ToElement());
+
+            return root;
         }
 
-        protected virtual XElement CardTxnElement(CardDetails card, BillingAddress billingAddress)
+        protected virtual XElement CardTxnElement(CardDetails card, BillingAddress billingAddress, Cv2AvsPolicy policy)
         {
             return new XElement("CardTxn",
                                 new XElement("method", "auth"),
-                                CardElement(card, billingAddress));
+                                CardElement(card, billingAddress, policy));
         }
 
-        protected virtual XElement CardElement(CardDetails card, BillingAddress billingAddress)
+        protected virtual XElement CardElement(CardDetails card, BillingAddress billingAddress, Cv2AvsPolicy policy)
         {
             return new XElement("Card",
                                 new XElement("pan", card.Number),
                                 new XElement("expirydate", card.ExpiryDate),
                                 new XElement("startdate", card.StartDate),
                                 new XElement("issuenumber", card.IssueNumber),
-                                Cv2AvsElement(card, billingAddress));
+                                Cv2AvsElement(card, billingAddress, policy));
         }
 
-        protected virtual XElement Cv2AvsElement(CardDetails card, BillingAddress billingAddress)
+        protected virtual XElement Cv2AvsElement(CardDetails card, BillingAddress billingAddress, Cv2AvsPolicy policy)
         {
             var cv2AvsElements = new List<XElement>();
             if (billingAddress != null)
@@ -101,6 +106,12 @@ namespace Moolah.DataCash
                 if (!string.IsNullOrWhiteSpace(formattedPostcode))
                     cv2AvsElements.Add(new XElement("postcode", formattedPostcode));
             }
+
+            // 0 is not a valid per-transaction policy code.
+            var cvPolicy = (int)policy;
+            if (cvPolicy > 0)
+                cv2AvsElements.Add(new XElement("policy", cvPolicy));
+
             cv2AvsElements.Add(new XElement("cv2", card.Cv2));
             return new XElement("Cv2Avs", cv2AvsElements.ToArray());
         }

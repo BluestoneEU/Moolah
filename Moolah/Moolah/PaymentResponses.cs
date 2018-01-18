@@ -39,6 +39,8 @@ namespace Moolah
         /// Result of the AVS/CV2 verification check if performed.
         /// </summary>
         string AvsCv2Result { get; }
+
+        string AuthCode { get; }
     }
 
     public interface I3DSecureResponse : ICardPaymentResponse

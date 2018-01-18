@@ -24,6 +24,8 @@ namespace Moolah.DataCash
         public CardFailureType FailureType { get; internal set; }
 
         public string AvsCv2Result { get; set; }
+
+        public string AuthCode { get; internal set; }
     }
 
     public class DataCash3DSecurePaymentResponse : CardPaymentPaymentResponse, I3DSecureResponse

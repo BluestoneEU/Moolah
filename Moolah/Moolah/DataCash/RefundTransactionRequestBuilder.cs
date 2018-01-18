@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 
 namespace Moolah.DataCash
 {
@@ -12,11 +13,11 @@ namespace Moolah.DataCash
         public XDocument Build(string originalTransactionReference, decimal amount)
         {
             return GetDocument(
-                TxnDetailsElement(null, amount, null),
+                TxnDetailsElement(null, amount, null, null),
                 HistoricTxnElement(originalTransactionReference));
         }
 
-        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode)
+        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012)
         {
             return new XElement("TxnDetails", new XElement("amount", amount.ToString("0.00")));
         }

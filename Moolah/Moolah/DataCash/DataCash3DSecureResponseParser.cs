@@ -26,6 +26,10 @@ namespace Moolah.DataCash
             if (document.TryGetXPathValue("Response/CardTxn/Cv2Avs/cv2avs_status", out avsCv2Result))
                 response.AvsCv2Result = avsCv2Result;
 
+            string auth_code;
+            if (document.TryGetXPathValue("Response/CardTxn/authcode", out auth_code))
+                response.AuthCode = auth_code;
+
             var dataCashStatus = int.Parse(document.XPathValue("Response/status"));
             switch (dataCashStatus)
             {
@@ -47,9 +51,17 @@ namespace Moolah.DataCash
                     else
                     {
                         response.Status = PaymentStatus.Failed;
+                        string reason;
+                        document.TryGetXPathValue("Response/reason", out reason);
+
+                        string information;
+                        document.TryGetXPathValue("Response/information", out information);
+
                         response.IsSystemFailure = DataCashStatus.IsSystemFailure(dataCashStatus);
                         var failureReason = DataCashStatus.FailureReason(dataCashStatus);
                         response.FailureMessage = failureReason.Message;
+                        response.FailureMessage = response.FailureMessage + (string.IsNullOrEmpty(information) ? "" : " " + information);
+                        response.FailureMessage = response.FailureMessage + (string.IsNullOrEmpty(reason) ? "" : $" [{reason}]");
                         response.FailureType = failureReason.Type;
                     }
                     break;

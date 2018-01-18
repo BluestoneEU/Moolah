@@ -14,12 +14,12 @@ namespace Moolah.DataCash
         private readonly ICancelGateway _cancelGateway;
 
         public DataCash3DSecureGateway()
-            : this(MoolahConfiguration.Current.DataCash3DSecure)
+            : this(MoolahConfiguration.Current.DataCash3DSecure, System.Web.HttpContext.Current.Request.UserAgent, System.Web.HttpContext.Current.Request.Headers["Accept"])
         {
         }
 
-        public DataCash3DSecureGateway(DataCash3DSecureConfiguration configuration)
-            : this(configuration, new HttpClient(), new DataCash3DSecureRequestBuilder(configuration), new DataCash3DSecureAuthorizeRequestBuilder(configuration), new DataCash3DSecureResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
+        public DataCash3DSecureGateway(DataCash3DSecureConfiguration configuration, string userAgent, string userAcceptHeader)
+            : this(configuration, new HttpClient(), new DataCash3DSecureRequestBuilder(configuration, userAgent, userAcceptHeader), new DataCash3DSecureAuthorizeRequestBuilder(configuration), new DataCash3DSecureResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
         {
         }
 
@@ -51,12 +51,13 @@ namespace Moolah.DataCash
             _cancelGateway = cancelGateway;
         }
 
-        public I3DSecureResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, string currencyCode = null)
+        public I3DSecureResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null)
         {
             if (string.IsNullOrWhiteSpace(merchantReference)) throw new ArgumentNullException("merchantReference");
 
-            var requestDocument = _paymentPaymentRequestBuilder.Build(merchantReference, amount, currencyCode, card, billingAddress);
-            var httpResponse = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
+            var requestDocument = _paymentPaymentRequestBuilder.Build(merchantReference, amount, currencyCode, card, policy, billingAddress, mcc6012);
+            var requestData = requestDocument.ToString(SaveOptions.None);
+            var httpResponse = _httpClient.Post(_configuration.Host, requestData);
             var response = _responseParser.Parse(httpResponse);
             if (response.CanAuthorize())
                 response = Authorise(response.TransactionReference, null);

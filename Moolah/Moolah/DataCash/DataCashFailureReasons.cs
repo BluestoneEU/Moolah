@@ -35,7 +35,7 @@ namespace Moolah.DataCash
         {
             { 2, new DataCashFailureReason("Communication was interrupted. The argument is e.g. 523/555 (523 bytes written but 555 expected).", CardFailureType.General) },
             { 3, new DataCashFailureReason("A timeout occurred while we were reading the transaction details.", CardFailureType.General) },
-            { 5, new DataCashFailureReason("A field was specified twice, you sent us too much or invalid data, a pre-auth lookup failed during a fulfill transaction, the swipe field was incorrectly specified, or you omitted a field. The argument will give a better indication of what exactly went wrong.", CardFailureType.General) },
+            { 5, new DataCashFailureReason("A field was specified twice, you sent us too much or invalid data, a pre-auth lookup failed during a fulfill transaction, the swipe field was incorrectly specified, or you omitted a field.", CardFailureType.General) },
             { 6, new DataCashFailureReason("Error in communications link; resend.", CardFailureType.General) },
             { 9, new DataCashFailureReason("The currency you specified does not exist", CardFailureType.General) },
             { 10, new DataCashFailureReason("The vTID or password were incorrect", CardFailureType.General) },
@@ -51,7 +51,7 @@ namespace Moolah.DataCash
             { 34, new DataCashFailureReason("The amount is missing, is not fully specified to x.xx format", CardFailureType.General) },
             { 51, new DataCashFailureReason("A transaction with this reference number is already going through the system.", CardFailureType.General) },
             { 59, new DataCashFailureReason("This combination of currency, card type and environment is not supported by this vTID", CardFailureType.General) },
-            { 60, new DataCashFailureReason("The XML Document is not valid with our Request schema. The reason is detailed in the <information> element of the Response document.", CardFailureType.General) },
+            { 60, new DataCashFailureReason("The XML Document is not valid with our Request schema.", CardFailureType.General) },
             { 61, new DataCashFailureReason("An error in account configuration caused the transaction to fail. Contact DataCash Technical Support", CardFailureType.General) },
             { 63, new DataCashFailureReason("The transaction type is not supported by the Acquirer", CardFailureType.General) },
             { 104, new DataCashFailureReason("Error in bank authorization, where APACS30 Response message refers to different TID to that used in APACS30 Request message; resend.", CardFailureType.General) },

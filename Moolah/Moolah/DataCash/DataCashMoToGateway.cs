@@ -47,9 +47,9 @@ namespace Moolah.DataCash
             _cancelGateway = cancelGateway;
         }
 
-        public ICardPaymentResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, string currencyCode = null)
+        public ICardPaymentResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null)
         {
-            var requestDocument = _paymentRequestBuilder.Build(merchantReference, amount, currencyCode, card, billingAddress);
+            var requestDocument = _paymentRequestBuilder.Build(merchantReference, amount, currencyCode, card, policy, billingAddress, mcc6012);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _responseParser.Parse(response);
         }

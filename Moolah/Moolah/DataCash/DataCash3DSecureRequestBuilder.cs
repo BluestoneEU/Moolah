@@ -11,34 +11,30 @@ namespace Moolah.DataCash
     public class DataCash3DSecureRequestBuilder : DataCashRequestBuilderBase, IDataCashPaymentRequestBuilder
     {
         private readonly DataCash3DSecureConfiguration _configuration;
-        private readonly HttpRequestBase _httpRequest;
+        private readonly string _userAgent;
+        private readonly string _acceptHeader;
 
         public ITimeProvider SystemTime { get; set; }
 
-        public DataCash3DSecureRequestBuilder(DataCash3DSecureConfiguration configuration)
-            : this(configuration, new HttpRequestWrapper(HttpContext.Current.Request))
-        {
-        }
-
-        public DataCash3DSecureRequestBuilder(DataCash3DSecureConfiguration configuration, HttpRequestBase httpRequest)
+        public DataCash3DSecureRequestBuilder(DataCash3DSecureConfiguration configuration, string userAgent, string acceptHeader)
             : base(configuration)
         {
-            if (httpRequest == null) throw new ArgumentNullException("httpRequest");
             _configuration = configuration;
-            _httpRequest = httpRequest;
+            _userAgent = userAgent;
+            _acceptHeader = acceptHeader;
             SystemTime = new TimeProvider();
         }
 
-        public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, BillingAddress billingAddress)
+        public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012)
         {
             return GetDocument(
-                TxnDetailsElement(merchantReference, amount, currencyCode),
-                CardTxnElement(card, billingAddress));
+                TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012),
+                CardTxnElement(card, billingAddress, policy));
         }
 
-        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode)
+        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012)
         {
-            var element = base.TxnDetailsElement(merchantReference, amount, currencyCode);
+            var element = base.TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012);
             element.Add(threeDSecureElement());
             return element;
         }
@@ -57,8 +53,8 @@ namespace Moolah.DataCash
         {
             return new XElement("Browser",
                                 new XElement("device_category", "0"),
-                                new XElement("accept_headers", _httpRequest.Headers["Accept"]),
-                                new XElement("user_agent", _httpRequest.UserAgent));
+                                new XElement("accept_headers", _acceptHeader),
+                                new XElement("user_agent", _userAgent));
         }
     }
 }
