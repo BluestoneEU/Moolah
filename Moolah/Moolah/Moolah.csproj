@@ -1,44 +1,21 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{936F3798-9957-483E-8649-78C16B368FB7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Moolah</RootNamespace>
+    <TargetFrameworks>net40</TargetFrameworks>
+    <!--<TargetFrameworks>netstandard2.0;net40</TargetFrameworks>-->
     <AssemblyName>Moolah</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
+    <OutputType>Library</OutputType>
+    <PackageId>Moolah</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <Copyright>Copyright David Duffett 2014 &amp; Various Others</Copyright>
+    <AssemblyVersion>0.7.4.0</AssemblyVersion>
+    <FileVersion>0.7.4.0</FileVersion>
+    <Description>Easy payment processing for .NET (DataCash, PayPal)</Description>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
-    </Reference>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -47,89 +24,13 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
+    <PackageReference Include="NLog" Version="2.0.0.2000" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CardDetails.cs" />
-    <Compile Include="CardType.cs" />
-    <Compile Include="CardUtility.cs" />
-    <Compile Include="DataCash\BillingAddress.cs" />
-    <Compile Include="DataCash\CancelGateway.cs" />
-    <Compile Include="DataCash\CancelTransactionRequestBuilder.cs" />
-    <Compile Include="DataCash\CancelTransactionResponse.cs" />
-    <Compile Include="DataCash\CancelTransactionResponseParser.cs" />
-    <Compile Include="DataCash\DataCash3DSecureAuthorizeRequestBuilder.cs" />
-    <Compile Include="DataCash\DataCash3DSecureGateway.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DataCash\DataCash3DSecureRefundGateway.cs" />
-    <Compile Include="DataCash\DataCash3DSecureResponseParser.cs" />
-    <Compile Include="DataCash\DataCash3DSecureRequestBuilder.cs" />
-    <Compile Include="DataCash\DataCashConfiguration.cs" />
-    <Compile Include="DataCash\CardFailureType.cs" />
-    <Compile Include="DataCash\DataCashFailureReason.cs" />
-    <Compile Include="DataCash\DataCashFailureReasons.cs" />
-    <Compile Include="DataCash\DataCashMoToGateway.cs" />
-    <Compile Include="DataCash\DataCashMoToRefundGateway.cs" />
-    <Compile Include="DataCash\DataCashPaymentResponse.cs" />
-    <Compile Include="DataCash\DataCashMoToRequestBuilder.cs" />
-    <Compile Include="DataCash\RefundTransactionRequestBuilder.cs" />
-    <Compile Include="DataCash\DataCashRequestBuilderBase.cs" />
-    <Compile Include="DataCash\DataCashResponseParser.cs" />
-    <Compile Include="DataCash\DataCashStatus.cs" />
-    <Compile Include="DataCash\RefundTransactionResponseParser.cs" />
-    <Compile Include="DataCash\RefundTransactionResponse.cs" />
-    <Compile Include="DataCash\RefundGateway.cs" />
-    <Compile Include="HttpClient.cs" />
-    <Compile Include="LoggerExtensions.cs" />
-    <Compile Include="DataCash\MCC6012.cs" />
-    <Compile Include="MoolahConfiguration.cs">
-      <DependentUpon>MoolahConfiguration.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Enums.cs" />
-    <Compile Include="PaymentGateways.cs" />
-    <Compile Include="PaymentResponses.cs" />
-    <Compile Include="PayPal\PayPalNoShipping.cs" />
-    <Compile Include="PayPal\PayPalRecurringProfileResponse.cs" />
-    <Compile Include="PayPal\PayReceiver.cs" />
-    <Compile Include="PayPal\PayPalMassPay.cs" />
-    <Compile Include="PayPal\CurrencyCodeType.cs" />
-    <Compile Include="PayPal\LocaleCodes.cs" />
-    <Compile Include="PayPal\OrderDetails.cs" />
-    <Compile Include="PayPal\PayPalConfiguration.cs" />
-    <Compile Include="PayPal\PayPalDecimalExtension.cs" />
-    <Compile Include="PayPal\PayPalExpressCheckout.cs" />
-    <Compile Include="PayPal\PayPalExpressCheckoutDetails.cs" />
-    <Compile Include="PayPal\PayPalExpressCheckoutToken.cs" />
-    <Compile Include="PayPal\PayPalPaymentResponse.cs" />
-    <Compile Include="PayPal\PayPalPaymentStatus.cs" />
-    <Compile Include="PayPal\PayPalRefundResponse.cs" />
-    <Compile Include="PayPal\PayPalRequestBuilder.cs" />
-    <Compile Include="PayPal\PayPalResponseParser.cs" />
-    <Compile Include="PayPal\PayPalAck.cs" />
-    <Compile Include="PayPal\ReceiverType.cs" />
-    <Compile Include="PayPal\RecurringPeriod.cs" />
-    <Compile Include="PayPal\RecurringProfile.cs" />
-    <Compile Include="PayPal\RecurringProfileStatus.cs" />
-    <Compile Include="PayPal\RefundType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Culture.cs" />
-    <Compile Include="TimeProvider.cs" />
-    <Compile Include="XPathExtensions.cs" />
+
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net40' ">
+    <PackageReference Include="NLog" Version="4.5.0-rc04" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="MoolahConfiguration.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
