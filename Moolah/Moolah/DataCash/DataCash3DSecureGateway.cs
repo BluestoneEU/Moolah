@@ -13,11 +13,6 @@ namespace Moolah.DataCash
         private readonly IRefundGateway _refundGateway;
         private readonly ICancelGateway _cancelGateway;
 
-        public DataCash3DSecureGateway()
-            : this(MoolahConfiguration.Current.DataCash3DSecure, System.Web.HttpContext.Current.Request.UserAgent, System.Web.HttpContext.Current.Request.Headers["Accept"])
-        {
-        }
-
         public DataCash3DSecureGateway(DataCash3DSecureConfiguration configuration, string userAgent, string userAcceptHeader)
             : this(configuration, new HttpClient(), new DataCash3DSecureRequestBuilder(configuration, userAgent, userAcceptHeader), new DataCash3DSecureAuthorizeRequestBuilder(configuration), new DataCash3DSecureResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
         {
