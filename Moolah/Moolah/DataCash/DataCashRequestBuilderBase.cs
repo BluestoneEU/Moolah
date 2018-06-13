@@ -11,6 +11,13 @@ namespace Moolah.DataCash
         XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012);
     }
 
+    public interface IDataCashRecurringTransactionBuilder
+    {
+        XDocument BuildSetup(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod);
+
+        XDocument BuildRepeat(string merchantReference, string transactionReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = null);
+    }
+
     public interface IDataCashAuthorizeRequestBuilder
     {
         XDocument Build(string transactionReference, string PARes);

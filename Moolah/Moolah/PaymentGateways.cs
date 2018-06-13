@@ -17,6 +17,13 @@ namespace Moolah
         ICardPaymentResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null);
     }
 
+    public interface IRecurringPaymentGateway: ICanRefundTransactions, ICanCancelTransactions
+    {
+        ICardPaymentResponse SetupPayment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "cnp");
+
+        ICardPaymentResponse RepeatPayment(string merchantReference, string transactionReference, decimal amount, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = null);
+    }
+
     public interface I3DSecurePaymentGateway : ICanRefundTransactions, ICanCancelTransactions
     {
         /// <summary>
