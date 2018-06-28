@@ -12,6 +12,11 @@ namespace Moolah
 
     public class HttpClient : IHttpClient
     {
+        static HttpClient()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+        }
+
         public string Get(string url)
         {
             var request = WebRequest.Create(url);
