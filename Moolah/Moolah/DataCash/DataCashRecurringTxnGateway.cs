@@ -12,8 +12,8 @@ namespace Moolah.DataCash
         private readonly DataCashConfiguration _configuration;
         private readonly IHttpClient _httpClient;
         private readonly IDataCashRecurringTransactionBuilder _paymentRequestBuilder;
-        private readonly IDataCashResponseParser _responseParser;
-        private readonly IRefundGateway _refundGateway;
+        private readonly IDataCashRecurringPaymentResponseParser _responseParser;
+        private readonly IRecurringRefundGateway _refundGateway;
         private readonly ICancelGateway _cancelGateway;
 
         public DataCashRecurringTxnGateway()
@@ -22,7 +22,7 @@ namespace Moolah.DataCash
         }
 
         public DataCashRecurringTxnGateway(DataCashConfiguration configuration)
-            : this(configuration, new HttpClient(), new DataCashRecurringTransactionBuilder(configuration), new DataCashResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
+            : this(configuration, new HttpClient(), new DataCashRecurringTransactionBuilder(configuration), new DataCashRecurringPaymentResponseParser(new DataCashResponseParser()), new DataCashRecurringRefundGateway(configuration), new CancelGateway(configuration))
         {
         }
 
@@ -33,8 +33,8 @@ namespace Moolah.DataCash
             DataCashConfiguration configuration,
             IHttpClient httpClient,
             IDataCashRecurringTransactionBuilder requestBuilder,
-            IDataCashResponseParser responseParser,
-            IRefundGateway refundGateway,
+            IDataCashRecurringPaymentResponseParser responseParser,
+            IRecurringRefundGateway refundGateway,
             ICancelGateway cancelGateway)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
@@ -56,23 +56,36 @@ namespace Moolah.DataCash
            return _cancelGateway.Cancel(originalTransactionReference);
         }
 
-        public ICardPaymentResponse SetupPayment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "ecomm")
+        public IRecurringPaymentResponse SetupPayment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "ecomm")
         {
-            var requestDocument = _paymentRequestBuilder.BuildSetup(merchantReference, amount, currencyCode, card, policy, billingAddress, mcc6012, captureMethod);
+            var requestDocument = _paymentRequestBuilder.BuildSetupPaymentRequest(merchantReference, amount, currencyCode, card, policy, billingAddress, mcc6012, captureMethod);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _responseParser.Parse(response);
         }
 
-        public ICardPaymentResponse RepeatPayment(string merchantReference, string transactionReference, decimal amount, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = null)
+        public IRecurringPaymentResponse RepeatPayment(string merchantReference, string contAuthReference, decimal amount, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "cont_auth")
         {
-            var requestDocument = _paymentRequestBuilder.BuildRepeat(merchantReference,transactionReference, amount, currencyCode, mcc6012, captureMethod);
+            var requestDocument = _paymentRequestBuilder.BuildRepeatPaymentRequest(merchantReference,contAuthReference, amount, currencyCode, mcc6012, captureMethod);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _responseParser.Parse(response);
         }
 
         public IRefundTransactionResponse RefundTransaction(string originalTransactionReference, decimal amount)
         {
-            return _refundGateway.Refund(originalTransactionReference, amount);
+            return _refundGateway.Refund(originalTransactionReference, amount, null);
+        }
+
+        /// <summary>
+        /// Refunds a repeat transaction
+        /// </summary>
+        /// <param name="originalTransactionReference">The original transaction reference</param>
+        /// <param name="amount">The amount to refund. Must be less than or equal to the original amount</param>
+        /// <param name="refund">When refunding a CA transaction (ie. a repeat payment), you MUST specify a capture method,
+        /// as the original capture method for the transaction "cont_auth" is non-refundable.</param>
+        /// <returns></returns>
+        public IRefundTransactionResponse RefundRepeatTransaction(string originalTransactionReference, decimal amount, string captureMethod = "ecomm")
+        {
+            return _refundGateway.Refund(originalTransactionReference, amount, captureMethod);
         }
     }
 }

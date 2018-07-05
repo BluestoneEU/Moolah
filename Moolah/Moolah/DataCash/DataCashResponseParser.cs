@@ -5,6 +5,8 @@ namespace Moolah.DataCash
     public interface IDataCashResponseParser
     {
         ICardPaymentResponse Parse(string dataCashResponse);
+
+        void SetPaymentValues(XDocument document, CardPaymentPaymentResponse response);
     }
 
     public class DataCashResponseParser : IDataCashResponseParser
@@ -13,7 +15,12 @@ namespace Moolah.DataCash
         {
             var document = XDocument.Parse(dataCashResponse);
             var response = new CardPaymentPaymentResponse(document);
+            SetPaymentValues(document, response);
+            return response;
+        }
 
+        public void SetPaymentValues(XDocument document, CardPaymentPaymentResponse response)
+        {
             string transactionReference;
             if (document.TryGetXPathValue("Response/datacash_reference", out transactionReference))
                 response.TransactionReference = transactionReference;
@@ -40,8 +47,7 @@ namespace Moolah.DataCash
                 response.FailureMessage = failureReason.Message + (string.IsNullOrEmpty(reason) ? "" : $" [{reason}]");
                 response.FailureType = failureReason.Type;
             }
-
-            return response;
         }
+
     }
 }

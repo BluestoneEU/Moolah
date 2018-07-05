@@ -14,19 +14,19 @@ namespace Moolah.DataCash
         {
         }
 
-        public XDocument BuildSetup(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod = "ecomm")
+        public XDocument BuildSetupPaymentRequest(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod = "ecomm")
         {
             return GetDocument(
                          AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012), captureMethod),
                          CardTxnElement(card, billingAddress, policy), ContAuthTxnElement(false));
         }
 
-        public XDocument BuildRepeat(string merchantReference, string transactionReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = null)
+        public XDocument BuildRepeatPaymentRequest(string merchantReference, string caReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = "cont_auth")
         {
             var txnDetails = TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012);
             if (!string.IsNullOrWhiteSpace(captureMethod))
                 txnDetails = AddCaptureMethod(txnDetails, captureMethod);
-            return GetDocument(txnDetails, HistoricTxnElement("auth", transactionReference), ContAuthTxnElement(true));
+            return GetDocument(txnDetails, HistoricTxnElement("auth", caReference), ContAuthTxnElement(true));
         }
 
         private XElement AddCaptureMethod(XElement txnDetails, string captureMethod)
@@ -38,7 +38,9 @@ namespace Moolah.DataCash
 
         private XElement ContAuthTxnElement(bool historic)
         {
-            return new XElement("ContAuthTxn", historic ? "historic" : "setup");
+           var contAuthTxn = new XElement("ContAuthTxn");
+            contAuthTxn.Add(new XAttribute("type", historic ? "historic" : "setup"));
+            return contAuthTxn;
         }
 
         private XElement HistoricTxnElement(string method, string transactionReference)

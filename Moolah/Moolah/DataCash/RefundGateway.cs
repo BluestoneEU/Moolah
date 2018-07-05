@@ -34,7 +34,12 @@ namespace Moolah.DataCash
 
         public IRefundTransactionResponse Refund(string originalTransactionReference, decimal amount)
         {
-            var requestDocument = _refundRequestBuilder.Build(originalTransactionReference, amount);
+            return Refund(originalTransactionReference, amount, null);
+        }
+
+        public IRefundTransactionResponse Refund(string originalTransactionReference, decimal amount, string captureMethod = null)
+        {
+            var requestDocument = _refundRequestBuilder.Build(originalTransactionReference, amount, captureMethod);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _refundResponseParser.Parse(response);
         }

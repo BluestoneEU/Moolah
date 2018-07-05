@@ -65,6 +65,8 @@
     <Compile Include="DataCash\DataCash3DSecureRefundGateway.cs" />
     <Compile Include="DataCash\DataCash3DSecureResponseParser.cs" />
     <Compile Include="DataCash\DataCash3DSecureRequestBuilder.cs" />
+    <Compile Include="DataCash\DataCashRecurringPaymentResponseParser.cs" />
+    <Compile Include="DataCash\DataCashRecurringRefundGateway.cs" />
     <Compile Include="DataCash\DataCashRecurringTransactionBuilder.cs" />
     <Compile Include="DataCash\DataCashConfiguration.cs" />
     <Compile Include="DataCash\CardFailureType.cs" />
