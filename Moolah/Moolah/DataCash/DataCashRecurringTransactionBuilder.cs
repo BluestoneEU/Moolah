@@ -17,8 +17,8 @@ namespace Moolah.DataCash
         public XDocument BuildSetupPaymentRequest(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod = "ecomm")
         {
             return GetDocument(
-                         AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012), captureMethod),
-                         CardTxnElement(card, billingAddress, policy), ContAuthTxnElement(false));
+                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012), captureMethod),
+                CardTxnElement(card, billingAddress, policy), ContAuthTxnElement(false));
         }
 
         public XDocument BuildRepeatPaymentRequest(string merchantReference, string caReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = "cont_auth")
@@ -38,7 +38,7 @@ namespace Moolah.DataCash
 
         private XElement ContAuthTxnElement(bool historic)
         {
-           var contAuthTxn = new XElement("ContAuthTxn");
+            var contAuthTxn = new XElement("ContAuthTxn");
             contAuthTxn.Add(new XAttribute("type", historic ? "historic" : "setup"));
             return contAuthTxn;
         }

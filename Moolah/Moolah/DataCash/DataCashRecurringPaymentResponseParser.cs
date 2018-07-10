@@ -15,7 +15,7 @@ namespace Moolah.DataCash
     public class DataCashRecurringPaymentResponseParser : IDataCashRecurringPaymentResponseParser
     {
         //composition-based inheritance
-        private IDataCashResponseParser BaseParser {get;set;}
+        private IDataCashResponseParser BaseParser { get; set; }
         public DataCashRecurringPaymentResponseParser(IDataCashResponseParser baseParser)
         {
             BaseParser = baseParser;
@@ -26,7 +26,7 @@ namespace Moolah.DataCash
             string contAuthReference;
             var document = XDocument.Parse(dataCashResponse);
             var response = new DataCashRecurringPaymentResponse(document);
-            BaseParser.SetPaymentValues(document,response);
+            BaseParser.SetPaymentValues(document, response);
             if (document.TryGetXPathValue("Response/ContAuthTxn/ca_reference", out contAuthReference))
                 response.CAReference = contAuthReference;
             return response;

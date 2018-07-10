@@ -17,7 +17,7 @@ namespace Moolah.DataCash
         private readonly ICancelGateway _cancelGateway;
 
         public DataCashRecurringTxnGateway()
-     : this(MoolahConfiguration.Current.DataCashMoTo)
+            : this(MoolahConfiguration.Current.DataCashMoTo)
         {
         }
 
@@ -72,20 +72,13 @@ namespace Moolah.DataCash
 
         public IRefundTransactionResponse RefundTransaction(string originalTransactionReference, decimal amount)
         {
-            return _refundGateway.Refund(originalTransactionReference, amount, null);
+            return _refundGateway.Refund(originalTransactionReference, amount);
         }
 
-        /// <summary>
-        /// Refunds a repeat transaction
-        /// </summary>
-        /// <param name="originalTransactionReference">The original transaction reference</param>
-        /// <param name="amount">The amount to refund. Must be less than or equal to the original amount</param>
-        /// <param name="refund">When refunding a CA transaction (ie. a repeat payment), you MUST specify a capture method,
-        /// as the original capture method for the transaction "cont_auth" is non-refundable.</param>
-        /// <returns></returns>
+
         public IRefundTransactionResponse RefundRepeatTransaction(string originalTransactionReference, decimal amount, string captureMethod = "ecomm")
         {
-            return _refundGateway.Refund(originalTransactionReference, amount, captureMethod);
+            return _refundGateway.RefundRecurring(originalTransactionReference, amount, captureMethod);
         }
     }
 }

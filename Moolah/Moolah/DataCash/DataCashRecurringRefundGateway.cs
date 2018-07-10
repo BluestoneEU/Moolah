@@ -8,7 +8,7 @@ namespace Moolah.DataCash
 {
     public interface IRecurringRefundGateway : IRefundGateway
     {
-        IRefundTransactionResponse Refund(string originalTransactionReference, decimal amount, string captureMethod);
+        IRefundTransactionResponse RefundRecurring(string originalTransactionReference, decimal amount, string captureMethod);
     }
 
 
