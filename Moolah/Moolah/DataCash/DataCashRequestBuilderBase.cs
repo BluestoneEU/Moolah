@@ -11,6 +11,13 @@ namespace Moolah.DataCash
         XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012);
     }
 
+    public interface IDataCashRecurringTransactionBuilder
+    {
+        XDocument BuildSetupPaymentRequest(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod);
+
+        XDocument BuildRepeatPaymentRequest(string merchantReference, string transactionReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = "cont_auth");
+    }
+
     public interface IDataCashAuthorizeRequestBuilder
     {
         XDocument Build(string transactionReference, string PARes);
@@ -18,7 +25,7 @@ namespace Moolah.DataCash
 
     public interface IDataCashRefundTransactionRequestBuilder
     {
-        XDocument Build(string originalTransactionReference, decimal amount);
+        XDocument Build(string originalTransactionReference, decimal amount, string captureMethod = null);
     }
 
     public interface IDataCashCancelTransactionRequestBuilder

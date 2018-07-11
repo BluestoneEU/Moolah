@@ -30,7 +30,7 @@ namespace Moolah.DataCash
 
     public class DataCash3DSecurePaymentResponse : CardPaymentPaymentResponse, I3DSecureResponse
     {
-        public DataCash3DSecurePaymentResponse(XDocument dataCashResponse) 
+        public DataCash3DSecurePaymentResponse(XDocument dataCashResponse)
             : base(dataCashResponse)
         {
         }
@@ -40,6 +40,15 @@ namespace Moolah.DataCash
         public string ACSUrl { get; internal set; }
 
         public string PAReq { get; internal set; }
+    }
+
+    public class DataCashRecurringPaymentResponse : CardPaymentPaymentResponse, IRecurringPaymentResponse
+    {
+        public DataCashRecurringPaymentResponse(XDocument dataCashResponse)
+            : base(dataCashResponse)
+        { }
+
+        public string CAReference { get; internal set; }
     }
 
     public static class DataCashResponseExtensions

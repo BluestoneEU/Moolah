@@ -43,6 +43,14 @@ namespace Moolah
         string AuthCode { get; }
     }
 
+    public interface IRecurringPaymentResponse : ICardPaymentResponse
+    {
+        /// <summary>
+        /// Reference to use in future installments of the recurring payment
+        /// </summary>
+        string CAReference { get; }
+    }
+
     public interface I3DSecureResponse : ICardPaymentResponse
     {
         /// <summary>
