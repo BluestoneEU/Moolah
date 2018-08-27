@@ -20,7 +20,7 @@ namespace Moolah.DataCash
         {
         }
 
-        public CancelGateway(DataCashConfiguration configuration, IHttpClient httpClient, IDataCashCancelTransactionRequestBuilder requestBuilder, ICancelTransactionResponseParser responseParser)
+        internal CancelGateway(DataCashConfiguration configuration, IHttpClient httpClient, IDataCashCancelTransactionRequestBuilder requestBuilder, ICancelTransactionResponseParser responseParser)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (httpClient == null) throw new ArgumentNullException("httpClient");

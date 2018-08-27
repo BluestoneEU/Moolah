@@ -8,7 +8,7 @@ namespace Moolah.DataCash
     /// Builds the DataCash 3D-Secure payment request XML.
     /// This is the same as MoTo, but with added sections for 3D-Secure and the Browser being used.
     /// </summary>
-    public class DataCash3DSecureRequestBuilder : DataCashRequestBuilderBase, IDataCashPaymentRequestBuilder
+    internal class DataCash3DSecureRequestBuilder : DataCashRequestBuilderBase, IDataCashPaymentRequestBuilder
     {
         private readonly DataCash3DSecureConfiguration _configuration;
         private readonly string _userAgent;

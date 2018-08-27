@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Moolah.DataCash
 {
-    public class RefundTransactionRequestBuilder : DataCashRequestBuilderBase, IDataCashRefundTransactionRequestBuilder
+    internal class RefundTransactionRequestBuilder : DataCashRequestBuilderBase, IDataCashRefundTransactionRequestBuilder
     {
         public RefundTransactionRequestBuilder(DataCashConfiguration configuration)
             : base(configuration)

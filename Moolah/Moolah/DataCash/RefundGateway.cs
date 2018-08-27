@@ -20,7 +20,7 @@ namespace Moolah.DataCash
         {
         }
 
-        public RefundGateway(DataCashConfiguration configuration, IHttpClient httpClient, IDataCashRefundTransactionRequestBuilder refundRequestBuilder, IRefundTransactionResponseParser refundResponseParser)
+        internal RefundGateway(DataCashConfiguration configuration, IHttpClient httpClient, IDataCashRefundTransactionRequestBuilder refundRequestBuilder, IRefundTransactionResponseParser refundResponseParser)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (httpClient == null) throw new ArgumentNullException("httpClient");

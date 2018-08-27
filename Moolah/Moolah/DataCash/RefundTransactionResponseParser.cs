@@ -2,12 +2,12 @@
 
 namespace Moolah.DataCash
 {
-    public interface IRefundTransactionResponseParser
+    internal interface IRefundTransactionResponseParser
     {
         IRefundTransactionResponse Parse(string dataCashResponse);
     }
 
-    public class RefundTransactionResponseParser : IRefundTransactionResponseParser
+    internal class RefundTransactionResponseParser : IRefundTransactionResponseParser
     {
         public IRefundTransactionResponse Parse(string dataCashResponse)
         {

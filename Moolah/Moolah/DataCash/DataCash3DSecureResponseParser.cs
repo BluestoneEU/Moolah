@@ -3,12 +3,12 @@ using NLog;
 
 namespace Moolah.DataCash
 {
-    public interface IDataCash3DSecureResponseParser
+    internal interface IDataCash3DSecureResponseParser
     {
         I3DSecureResponse Parse(string dataCashResponse);
     }
 
-    public class DataCash3DSecureResponseParser : IDataCash3DSecureResponseParser
+    internal class DataCash3DSecureResponseParser : IDataCash3DSecureResponseParser
     {
         static readonly Logger Log = LogManager.GetCurrentClassLogger();
 

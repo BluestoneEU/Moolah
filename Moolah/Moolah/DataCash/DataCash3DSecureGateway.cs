@@ -18,10 +18,7 @@ namespace Moolah.DataCash
         {
         }
 
-        /// <summary>
-        /// TODO: Make internal and visible to Moolah.Specs
-        /// </summary>
-        public DataCash3DSecureGateway(
+        internal DataCash3DSecureGateway(
             DataCash3DSecureConfiguration configuration, 
             IHttpClient httpClient, 
             IDataCashPaymentRequestBuilder paymentRequestBuilder, 

@@ -2,12 +2,12 @@
 
 namespace Moolah.DataCash
 {
-    public interface ICancelTransactionResponseParser
+    internal interface ICancelTransactionResponseParser
     {
         ICancelTransactionResponse Parse(string dataCashResponse);
     }
 
-    public class CancelTransactionResponseParser : ICancelTransactionResponseParser
+    internal class CancelTransactionResponseParser : ICancelTransactionResponseParser
     {
         public ICancelTransactionResponse Parse(string dataCashResponse)
         {

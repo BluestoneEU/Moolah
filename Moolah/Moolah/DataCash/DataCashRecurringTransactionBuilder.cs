@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Moolah.DataCash
 {
-    public class DataCashRecurringTransactionBuilder : DataCashRequestBuilderBase, IDataCashRecurringTransactionBuilder
+    internal class DataCashRecurringTransactionBuilder : DataCashRequestBuilderBase, IDataCashRecurringTransactionBuilder
     {
         public DataCashRecurringTransactionBuilder(DataCashConfiguration configuration)
         : base(configuration)

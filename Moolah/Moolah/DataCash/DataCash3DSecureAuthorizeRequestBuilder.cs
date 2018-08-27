@@ -5,7 +5,7 @@ namespace Moolah.DataCash
     /// <summary>
     /// Builds DataCash request XML to authorize a pending 3D-Secure payment transaction.
     /// </summary>
-    public class DataCash3DSecureAuthorizeRequestBuilder : DataCashRequestBuilderBase, IDataCashAuthorizeRequestBuilder
+    internal class DataCash3DSecureAuthorizeRequestBuilder : DataCashRequestBuilderBase, IDataCashAuthorizeRequestBuilder
     {
         public DataCash3DSecureAuthorizeRequestBuilder(DataCashConfiguration configuration)
             : base(configuration)

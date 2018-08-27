@@ -2,7 +2,7 @@
 
 namespace Moolah.DataCash
 {
-    public class CancelTransactionRequestBuilder : DataCashRequestBuilderBase, IDataCashCancelTransactionRequestBuilder
+    internal class CancelTransactionRequestBuilder : DataCashRequestBuilderBase, IDataCashCancelTransactionRequestBuilder
     {
         public CancelTransactionRequestBuilder(DataCashConfiguration configuration)
             : base(configuration)

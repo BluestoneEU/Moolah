@@ -6,7 +6,7 @@ namespace Moolah.DataCash
     /// <summary>
     /// Builds the DataCash MoTo request XML.
     /// </summary>
-    public class DataCashMoToRequestBuilder : DataCashRequestBuilderBase, IDataCashPaymentRequestBuilder
+    internal class DataCashMoToRequestBuilder : DataCashRequestBuilderBase, IDataCashPaymentRequestBuilder
     {
         public DataCashMoToRequestBuilder(DataCashConfiguration configuration)
             : base(configuration)
