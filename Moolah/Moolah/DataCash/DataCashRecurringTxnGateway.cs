@@ -26,10 +26,7 @@ namespace Moolah.DataCash
         {
         }
 
-        /// <summary>
-        /// TODO: Make internal and visible to Moolah.Specs
-        /// </summary>
-        public DataCashRecurringTxnGateway(
+        internal DataCashRecurringTxnGateway(
             DataCashConfiguration configuration,
             IHttpClient httpClient,
             IDataCashRecurringTransactionBuilder requestBuilder,

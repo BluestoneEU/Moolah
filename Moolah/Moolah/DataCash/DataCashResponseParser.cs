@@ -1,15 +1,15 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 
 namespace Moolah.DataCash
 {
-    public interface IDataCashResponseParser
+    internal interface IDataCashResponseParser
     {
         ICardPaymentResponse Parse(string dataCashResponse);
 
         void SetPaymentValues(XDocument document, CardPaymentPaymentResponse response);
     }
 
-    public class DataCashResponseParser : IDataCashResponseParser
+    internal class DataCashResponseParser : IDataCashResponseParser
     {
         public ICardPaymentResponse Parse(string dataCashResponse)
         {

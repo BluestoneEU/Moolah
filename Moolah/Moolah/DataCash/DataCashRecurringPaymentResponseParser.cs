@@ -7,12 +7,12 @@ using System.Xml.Linq;
 
 namespace Moolah.DataCash
 {
-    public interface IDataCashRecurringPaymentResponseParser
+    internal interface IDataCashRecurringPaymentResponseParser
     {
         IRecurringPaymentResponse Parse(string dataCashResponse);
     }
 
-    public class DataCashRecurringPaymentResponseParser : IDataCashRecurringPaymentResponseParser
+    internal class DataCashRecurringPaymentResponseParser : IDataCashRecurringPaymentResponseParser
     {
         //composition-based inheritance
         private IDataCashResponseParser BaseParser { get; set; }

@@ -22,10 +22,7 @@ namespace Moolah.DataCash
         {
         }
 
-        /// <summary>
-        /// TODO: Make internal and visible to Moolah.Specs
-        /// </summary>
-        public DataCashMoToGateway(
+        internal DataCashMoToGateway(
             DataCashConfiguration configuration, 
             IHttpClient httpClient, 
             IDataCashPaymentRequestBuilder requestBuilder,
