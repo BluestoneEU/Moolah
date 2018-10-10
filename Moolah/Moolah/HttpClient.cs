@@ -14,7 +14,7 @@ namespace Moolah
     {
         static HttpClient()
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
         public string Get(string url)
