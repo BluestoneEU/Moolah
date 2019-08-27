@@ -17,16 +17,6 @@ namespace Moolah.DataCash
                 HistoricTxnElement(originalTransactionReference));
         }
 
-        XElement AddCaptureMethod(XElement txnDetails, string captureMethod)
-        {
-            if (!string.IsNullOrWhiteSpace(captureMethod))
-            {
-                var cm = new XElement("capturemethod", captureMethod);
-                txnDetails.Add(cm);
-            }
-            return txnDetails;
-        }
-
         protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012)
         {
             return new XElement("TxnDetails", new XElement("amount", amount.ToString("0.00")));
