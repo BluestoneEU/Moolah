@@ -39,6 +39,11 @@ namespace Moolah.DataCash
         /// </summary>
         public bool AccountHolderIsACompany { get; set; }
 
+        /// <summary>
+        /// If true - postal code will no be validated on null or empty string
+        /// </summary>
+        public bool PostalCodeCanBeEmpty { get; set; }
+
         internal XElement ToElement()
         {
             if (String.IsNullOrEmpty(AccountNumber))
@@ -47,7 +52,7 @@ namespace Moolah.DataCash
             if (!AccountHolderIsACompany && DateOfBirth == null)
                 throw new ArgumentException($"{nameof(MCC6012)}.{DateOfBirth} must not be null.");
 
-            if (String.IsNullOrEmpty(PostalCode))
+            if (!PostalCodeCanBeEmpty && String.IsNullOrEmpty(PostalCode))
                 throw new ArgumentException($"{nameof(MCC6012)}.{PostalCode} must not be null.");
 
             if (String.IsNullOrEmpty(Surname))
