@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml.Linq;
 
 namespace Moolah.DataCash
@@ -61,6 +62,24 @@ namespace Moolah.DataCash
             if (string.IsNullOrWhiteSpace(transactionReference)) throw new ArgumentNullException("transactionReference");
 
             var requestDocument = _authorizeRequestBuilder.Build(transactionReference, PARes);
+            var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
+            return _responseParser.Parse(response);
+        }
+
+        public I3DSecureResponse Resume3DSecure(string transactionReference, string cvv)
+        {
+            if (string.IsNullOrWhiteSpace(transactionReference)) throw new ArgumentNullException("transactionReference");
+
+            var requestDocument = _authorizeRequestBuilder.BuildResume3DS(transactionReference, cvv);
+            var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
+            return _responseParser.Parse(response);
+        }
+        
+        public I3DSecureResponse Complete3DSecure(string transactionReference, string cvv)
+        {
+            if (string.IsNullOrWhiteSpace(transactionReference)) throw new ArgumentNullException("transactionReference");
+
+            var requestDocument = _authorizeRequestBuilder.BuildComplete3DS(transactionReference, cvv);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _responseParser.Parse(response);
         }

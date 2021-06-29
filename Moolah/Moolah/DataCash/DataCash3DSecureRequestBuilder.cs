@@ -28,25 +28,43 @@ namespace Moolah.DataCash
         public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012)
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012), "ecomm"),
+                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, card.CardHolder, billingAddress), "ecomm"),
                 CardTxnElement(card, billingAddress, policy));
         }
 
-        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012)
+        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012, string cardHolder, BillingAddress billingAddress)
         {
-            var element = base.TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012);
+            var element = base.TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, cardHolder, billingAddress);
+            element.Add(new XElement("custom_data", merchantReference));
             element.Add(threeDSecureElement());
+            element.Add(customerInfoElement(cardHolder, billingAddress));
             return element;
         }
 
+        private XElement customerInfoElement(string cardHolder, BillingAddress billingAddress)
+        {
+            return new XElement("CustomerInfo",
+                new XElement("cardHolderName", cardHolder),
+                new XElement("mobileNumber", billingAddress.PhoneNumber),
+                new XElement("emailAddress", billingAddress.Email),
+                new XElement("phoneCountryCode", "44"));
+        }
+        
         private XElement threeDSecureElement()
         {
             return new XElement("ThreeDSecure",
-                                new XElement("verify", "yes"),
-                                new XElement("merchant_url", _configuration.MerchantUrl),
-                                new XElement("purchase_desc", _configuration.PurchaseDescription),
-                                new XElement("purchase_datetime", SystemTime.Now.ToString("yyyyMMdd HH:mm:ss")),
-                                browserElement());
+                                // new XElement("verify", "yes"),
+                                // new XElement("merchant_url", _configuration.MerchantUrl),
+                                // new XElement("purchase_desc", _configuration.PurchaseDescription),
+                                // new XElement("purchase_datetime", SystemTime.Now.ToString("yyyyMMdd HH:mm:ss")),
+                                new XElement("methodNotificationUrl", _configuration.MethodNotificationUrl),
+                                new XElement("challengeNotificationUrl", _configuration.ChallengeNotificationUrl)
+                                // new XElement("methodNotificationUrl", "https://api.karatepay.com/order/3ds/methodNotification"),
+                                // new XElement("challengeNotificationUrl", "https://api.karatepay.com/order/3ds/challengeNotification")
+                                // <methodNotificationUrl>https://api.karatepay.com/order/3ds/methodNotification</methodNotificationUrl>
+                                // <challengeNotificationUrl>https://api.karatepay.com/order/3ds/challengeNotification</challengeNotificationUrl>
+                                // browserElement()
+                                );
         }
 
         private XElement browserElement()

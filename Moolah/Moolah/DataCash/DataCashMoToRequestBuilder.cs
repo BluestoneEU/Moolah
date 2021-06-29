@@ -16,7 +16,7 @@ namespace Moolah.DataCash
         public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012)
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012), "cnp"),
+                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, card.CardHolder, billingAddress), "cnp"),
                 CardTxnElement(card, billingAddress, policy));
         }
     }

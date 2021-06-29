@@ -10,5 +10,6 @@
         public string Cv2 { get; set; }
         public string StartDate { get; set; }
         public string IssueNumber { get; set; }
+        public string CardHolder { get; set; }
     }
 }

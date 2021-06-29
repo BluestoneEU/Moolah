@@ -5,8 +5,11 @@ namespace Moolah.DataCash
 {
     public class DataCashConfiguration : ConfigurationElement
     {
-        const string TestHost = "https://testserver.datacash.com/Transaction";
-        const string LiveHost = "https://mars.transaction.datacash.com/Transaction";
+        // const string TestHost = "https://testserver.datacash.com/Transaction";
+        // const string LiveHost = "https://mars.transaction.datacash.com/Transaction";
+
+        const string TestHost = "https://api-sandbox.judopay.com/bridge/dpg/transactions";
+        const string LiveHost = "https://api.judopay.com/bridge/dpg/transactions";
 
         internal DataCashConfiguration()
         {
@@ -60,19 +63,23 @@ namespace Moolah.DataCash
         }
 
         public DataCash3DSecureConfiguration(PaymentEnvironment environment, string merchantId, string password,
-            string merchantUrl, string purchaseDescription)
+            string merchantUrl, string purchaseDescription, string methodNotificationUrl, string challengeNotificationUrl)
             : base(environment, merchantId, password)
         {
             if (string.IsNullOrWhiteSpace(merchantUrl)) throw new ArgumentNullException("merchantUrl");
             if (string.IsNullOrWhiteSpace(purchaseDescription)) throw new ArgumentNullException("purchaseDescription");
             MerchantUrl = merchantUrl;
             PurchaseDescription = purchaseDescription;
+            MethodNotificationUrl = methodNotificationUrl;
+            ChallengeNotificationUrl = challengeNotificationUrl;
         }
 
         static class Attributes
         {
             public const string MerchantUrl = "merchantUrl";
             public const string PurchaseDescription = "purchaseDescription";
+            public const string MethodNotificationUrl = "methodNotificationUrl";
+            public const string ChallengeNotificationUrl = "challengeNotificationUrl";
         }
 
         /// <summary>
@@ -84,6 +91,32 @@ namespace Moolah.DataCash
         {
             get { return (string) this[Attributes.MerchantUrl]; }
             set { this[Attributes.MerchantUrl] = value; }
+        }
+
+        /// <summary>
+        /// The URL for the additional client information request.  
+        /// This is used to send a hidden request with client information during the 3D-Secure authentication process.
+        /// </summary>
+        // public string MethodNotificationUrl => "https://api.karatepay.com/order/3ds/methodNotification";
+        // public string MethodNotificationUrl => "https://localhost:5001/threeDSecureNotification/methodNotification";
+        [ConfigurationProperty(Attributes.MethodNotificationUrl)]
+        public string MethodNotificationUrl 
+        { 
+            get { return (string) this[Attributes.MethodNotificationUrl]; }
+            set { this[Attributes.MethodNotificationUrl] = value; } 
+        }
+
+        /// <summary>
+        /// The URL with the challenge page.  
+        /// This is displayed to the customer by the bank during the 3D-Secure authentication process.
+        /// </summary>
+        // public string ChallengeNotificationUrl => "https://api.karatepay.com/order/3ds/challengeNotification";
+        // public string ChallengeNotificationUrl => "https://localhost:5001/threeDSecureNotification/challengeNotification";
+        [ConfigurationProperty(Attributes.ChallengeNotificationUrl)]
+        public string ChallengeNotificationUrl 
+        { 
+            get { return (string) this[Attributes.ChallengeNotificationUrl]; }
+            set { this[Attributes.ChallengeNotificationUrl] = value; } 
         }
 
         /// <summary>

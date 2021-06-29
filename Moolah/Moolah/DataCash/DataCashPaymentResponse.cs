@@ -40,6 +40,11 @@ namespace Moolah.DataCash
         public string ACSUrl { get; internal set; }
 
         public string PAReq { get; internal set; }
+
+        public string MD { get; set; }
+        
+        public string ChallengeUrl { get; internal set; }
+
     }
 
     public class DataCashRecurringPaymentResponse : CardPaymentPaymentResponse, IRecurringPaymentResponse

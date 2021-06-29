@@ -13,11 +13,11 @@ namespace Moolah.DataCash
         public XDocument Build(string originalTransactionReference, decimal amount, string captureMethod = null)
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(null, amount, null, null), captureMethod),
+                AddCaptureMethod(TxnDetailsElement(null, amount, null, null, null, null), captureMethod),
                 HistoricTxnElement(originalTransactionReference));
         }
 
-        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012)
+        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012, string cardHolder, BillingAddress billingAddress)
         {
             return new XElement("TxnDetails", new XElement("amount", amount.ToString("0.00")));
         }

@@ -39,8 +39,18 @@ namespace Moolah.DataCash
                 case DataCashStatus.RequiresThreeDSecureAuthentication:
                     response.Status = PaymentStatus.Pending;
                     response.Requires3DSecurePayerVerification = true;
-                    response.PAReq = document.XPathValue("Response/CardTxn/ThreeDSecure/pareq_message");
-                    response.ACSUrl = document.XPathValue("Response/CardTxn/ThreeDSecure/acs_url");
+                    // response.PAReq = document.XPathValue("Response/CardTxn/ThreeDSecure/pareq_message");
+                    // response.ACSUrl = document.XPathValue("Response/CardTxn/ThreeDSecure/acs_url");
+                    document.TryGetXPathValue("Response/ThreeDSecure/cReq", out var cReq);
+                    document.TryGetXPathValue("Response/ThreeDSecure/methodUrl", out var methodUrl);
+                    document.TryGetXPathValue("Response/ThreeDSecure/md", out var md);
+                    document.TryGetXPathValue("Response/ThreeDSecure/challengeUrl", out var challengeUrl);
+                    // challengeUrl = challengeUrl?.Replace("https:", "http:");
+                    // methodUrl = methodUrl?.Replace("https:", "http:");
+                    response.PAReq = !string.IsNullOrEmpty(cReq) ? cReq : md;
+                    response.MD = md;
+                    response.ChallengeUrl = challengeUrl;
+                    response.ACSUrl = !string.IsNullOrEmpty(methodUrl) ? methodUrl : challengeUrl;
                     break;
                 default:
                     if (DataCashStatus.CanImmediatelyAuthorise(dataCashStatus))

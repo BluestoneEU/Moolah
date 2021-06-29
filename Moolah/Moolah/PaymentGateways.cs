@@ -74,6 +74,19 @@ namespace Moolah
         I3DSecureResponse Authorise(string transactionReference, string PARes);
 
         /// <summary>
+        /// Attempts to authorise a 3D-Secure transaction previously submitted to the <see cref="Payment"/> method.
+        /// </summary>
+        /// <param name="transactionReference">Transaction reference returned by the Gateway for the original 3D-Secure payment request.</param>
+        I3DSecureResponse Resume3DSecure(string transactionReference, string cvv);
+
+        /// <summary>
+        /// Attempts to authorise a 3D-Secure transaction previously submitted to the <see cref="Payment"/> method.
+        /// </summary>
+        /// <param name="transactionReference">Transaction reference returned by the Gateway for the original 3D-Secure payment request.</param>
+        I3DSecureResponse Complete3DSecure(string transactionReference, string cvv);
+
+
+        /// <summary>
         /// Merchant vTID number
         /// </summary>
         string MerchantId { get; }

@@ -67,5 +67,7 @@ namespace Moolah
         /// Payer Authentication Request (PAReq) which should be posted to the ACS.
         /// </summary>
         string PAReq { get; }
+
+        string ChallengeUrl { get; }
     }
 }

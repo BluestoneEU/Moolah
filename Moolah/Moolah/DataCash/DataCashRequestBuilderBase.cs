@@ -21,6 +21,10 @@ namespace Moolah.DataCash
     internal interface IDataCashAuthorizeRequestBuilder
     {
         XDocument Build(string transactionReference, string PARes);
+
+        XDocument BuildResume3DS(string transactionReference, string cvv);
+        
+        XDocument BuildComplete3DS(string transactionReference, string cvv);
     }
 
     internal interface IDataCashRefundTransactionRequestBuilder
@@ -58,7 +62,11 @@ namespace Moolah.DataCash
         private XElement authenticationElement()
         {
             return new XElement("Authentication",
-                                new XElement("client", _configuration.MerchantId),
+                // new XElement("client", "100658277"),
+                // new XElement("password", "jY7LD2XkhhPoqEVV:295fdcaa4d6d57c035d06164a8771c014595e1b45d146a10d004f9d32d337d7f"));
+                // new XElement("password", "5AbJqGv4JiZ8nMRM:9d9532db27c877c268bcd6875ffc36ac6653391790b43caafb0259bbe791efed"));
+
+            new XElement("client", _configuration.MerchantId),
                                 new XElement("password", _configuration.Password));
         }
 
@@ -69,15 +77,15 @@ namespace Moolah.DataCash
 
         protected virtual XElement AddCaptureMethod(XElement txnDetails, string captureMethod)
         {
-            if (!string.IsNullOrWhiteSpace(captureMethod))
-            {
-                var cm = new XElement("capturemethod", captureMethod);
-                txnDetails.Add(cm);
-            }
+            // if (!string.IsNullOrWhiteSpace(captureMethod))
+            // {
+            //     var cm = new XElement("capturemethod", captureMethod);
+            //     txnDetails.Add(cm);
+            // }
             return txnDetails;
         }
 
-        protected virtual XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012)
+        protected virtual XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012, string cardHolder, BillingAddress billingAddress)
         {
             var amountElement = new XElement("amount", amount.ToString("0.00"));
             if (!string.IsNullOrWhiteSpace(currencyCode))
@@ -87,8 +95,8 @@ namespace Moolah.DataCash
                 new XElement("merchantreference", merchantReference),
                 amountElement);
 
-            if (mcc6012 != null)
-                root.Add(mcc6012.ToElement());
+            // if (mcc6012 != null)
+            //     root.Add(mcc6012.ToElement());
 
             return root;
         }
@@ -105,8 +113,8 @@ namespace Moolah.DataCash
             return new XElement("Card",
                                 new XElement("pan", card.Number),
                                 new XElement("expirydate", card.ExpiryDate),
-                                new XElement("startdate", card.StartDate),
-                                new XElement("issuenumber", card.IssueNumber),
+                                // new XElement("startdate", card.StartDate),
+                                // new XElement("issuenumber", card.IssueNumber),
                                 Cv2AvsElement(card, billingAddress, policy));
         }
 
@@ -115,9 +123,18 @@ namespace Moolah.DataCash
             var cv2AvsElements = new List<XElement>();
             if (billingAddress != null)
             {
-                var numericAddress = numericPartsOfAddress(billingAddress);
-                if (!string.IsNullOrWhiteSpace(numericAddress))
-                    cv2AvsElements.Add(new XElement("street_address1", numericAddress));
+                // var numericAddress = numericPartsOfAddress(billingAddress);
+                // if (!string.IsNullOrWhiteSpace(numericAddress))
+                //     cv2AvsElements.Add(new XElement("street_address1", numericAddress));
+
+                cv2AvsElements.Add(new XElement("street_address1", "Address1"));
+                cv2AvsElements.Add(new XElement("street_address2", "Address2"));
+                cv2AvsElements.Add(new XElement("street_address3", "Address3"));
+                cv2AvsElements.Add(new XElement("street_address4", "Address4"));
+                
+                cv2AvsElements.Add(new XElement("city", "London"));
+                cv2AvsElements.Add(new XElement("state_province", string.Empty));
+                cv2AvsElements.Add(new XElement("country", "826"));
 
                 var formattedPostcode = formatPostcode(billingAddress.Postcode);
                 if (!string.IsNullOrWhiteSpace(formattedPostcode))
@@ -125,9 +142,9 @@ namespace Moolah.DataCash
             }
 
             // 0 is not a valid per-transaction policy code.
-            var cvPolicy = (int)policy;
-            if (cvPolicy > 0)
-                cv2AvsElements.Add(new XElement("policy", cvPolicy));
+            // var cvPolicy = (int)policy;
+            // if (cvPolicy > 0)
+            //     cv2AvsElements.Add(new XElement("policy", cvPolicy));
 
             cv2AvsElements.Add(new XElement("cv2", card.Cv2));
             return new XElement("Cv2Avs", cv2AvsElements.ToArray());
