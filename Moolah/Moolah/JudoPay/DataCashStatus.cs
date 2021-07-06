@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     /// <summary>
     /// See https://testserver.datacash.com/software/returncodes.shtml for full list.
@@ -24,19 +24,19 @@ namespace Moolah.DataCash
         {
             return dataCashStatus != Success && dataCashStatus != NotAuthorised &&
                    dataCashStatus != RequiresThreeDSecureAuthentication
-                   && !DataCashFailureReasons.CleanFailures.ContainsKey(dataCashStatus);
+                   && !JudoPayFailureReasons.CleanFailures.ContainsKey(dataCashStatus);
         }
 
-        public static DataCashFailureReason FailureReason(int dataCashStatus)
+        public static JudoPayFailureReason FailureReason(int dataCashStatus)
         {
-            DataCashFailureReason failureReason;
+            JudoPayFailureReason failureReason;
             
             if (IsSystemFailure(dataCashStatus))
-                return DataCashFailureReasons.SystemFailures.TryGetValue(dataCashStatus, out failureReason)
+                return JudoPayFailureReasons.SystemFailures.TryGetValue(dataCashStatus, out failureReason)
                                               ? failureReason
-                                              : new DataCashFailureReason(string.Format("Unknown DataCash status code: {0}", dataCashStatus), CardFailureType.General);
+                                              : new JudoPayFailureReason(string.Format("Unknown DataCash status code: {0}", dataCashStatus), CardFailureType.General);
 
-            DataCashFailureReasons.CleanFailures.TryGetValue(dataCashStatus, out failureReason);
+            JudoPayFailureReasons.CleanFailures.TryGetValue(dataCashStatus, out failureReason);
             return failureReason;
         }
     }

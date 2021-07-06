@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    public class DataCashMoToGateway : IPaymentGateway
+    public class JudoPayMoToGateway : IPaymentGateway
     {
-        private readonly DataCashConfiguration _configuration;
+        private readonly JudoPayConfiguration _configuration;
         private readonly IHttpClient _httpClient;
-        private readonly IDataCashPaymentRequestBuilder _paymentRequestBuilder;
-        private readonly IDataCashResponseParser _responseParser;
+        private readonly IJudoPayPaymentRequestBuilder _paymentRequestBuilder;
+        private readonly IJudoPayResponseParser _responseParser;
         private readonly IRefundGateway _refundGateway;
         private readonly ICancelGateway _cancelGateway;
 
-        public DataCashMoToGateway()
-            : this(MoolahConfiguration.Current.DataCashMoTo)
+        public JudoPayMoToGateway()
+            : this(MoolahConfiguration.Current.JudoPayMoTo)
         {
         }
 
-        public DataCashMoToGateway(DataCashConfiguration configuration)
-            : this(configuration, new HttpClient(), new DataCashMoToRequestBuilder(configuration), new DataCashResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
+        public JudoPayMoToGateway(JudoPayConfiguration configuration)
+            : this(configuration, new HttpClient(), new JudoPayMoToRequestBuilder(configuration), new JudoPayResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
         {
         }
 
-        internal DataCashMoToGateway(
-            DataCashConfiguration configuration, 
+        internal JudoPayMoToGateway(
+            JudoPayConfiguration configuration, 
             IHttpClient httpClient, 
-            IDataCashPaymentRequestBuilder requestBuilder,
-            IDataCashResponseParser responseParser,
+            IJudoPayPaymentRequestBuilder requestBuilder,
+            IJudoPayResponseParser responseParser,
             IRefundGateway refundGateway,
             ICancelGateway cancelGateway)
         {

@@ -2,21 +2,21 @@ using System;
 using System.Web;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     /// <summary>
     /// Builds the DataCash 3D-Secure payment request XML.
     /// This is the same as MoTo, but with added sections for 3D-Secure and the Browser being used.
     /// </summary>
-    internal class DataCash3DSecureRequestBuilder : DataCashRequestBuilderBase, IDataCashPaymentRequestBuilder
+    internal class JudoPay3DSecureRequestBuilder : JudoPayRequestBuilderBase, IJudoPayPaymentRequestBuilder
     {
-        private readonly DataCash3DSecureConfiguration _configuration;
+        private readonly JudoPay3DSecureConfiguration _configuration;
         private readonly string _userAgent;
         private readonly string _acceptHeader;
 
         public ITimeProvider SystemTime { get; set; }
 
-        public DataCash3DSecureRequestBuilder(DataCash3DSecureConfiguration configuration, string userAgent, string acceptHeader)
+        public JudoPay3DSecureRequestBuilder(JudoPay3DSecureConfiguration configuration, string userAgent, string acceptHeader)
             : base(configuration)
         {
             _configuration = configuration;
@@ -28,13 +28,13 @@ namespace Moolah.DataCash
         public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012)
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, card.CardHolder, billingAddress), "ecomm"),
+                TxnDetailsElement(merchantReference, amount, currencyCode, card.CardHolder, billingAddress),
                 CardTxnElement(card, billingAddress, policy));
         }
 
-        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012, string cardHolder, BillingAddress billingAddress)
+        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, string cardHolder, BillingAddress billingAddress)
         {
-            var element = base.TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, cardHolder, billingAddress);
+            var element = base.TxnDetailsElement(merchantReference, amount, currencyCode, cardHolder, billingAddress);
             element.Add(new XElement("custom_data", merchantReference));
             element.Add(threeDSecureElement());
             element.Add(customerInfoElement(cardHolder, billingAddress));

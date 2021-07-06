@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     public interface IRecurringRefundGateway : IRefundGateway
     {
@@ -12,9 +12,9 @@ namespace Moolah.DataCash
     }
 
 
-    public class DataCashRecurringRefundGateway : RefundGateway, IRecurringRefundGateway
+    public class JudoPayRecurringRefundGateway : RefundGateway, IRecurringRefundGateway
     {
-        public DataCashRecurringRefundGateway(DataCashConfiguration configuration):base(configuration)
+        public JudoPayRecurringRefundGateway(JudoPayConfiguration configuration):base(configuration)
         {
         }
 

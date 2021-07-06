@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Configuration;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    public class DataCashConfiguration : ConfigurationElement
+    public class JudoPayConfiguration : ConfigurationElement
     {
         // const string TestHost = "https://testserver.datacash.com/Transaction";
         // const string LiveHost = "https://mars.transaction.datacash.com/Transaction";
@@ -11,11 +11,11 @@ namespace Moolah.DataCash
         const string TestHost = "https://api-sandbox.judopay.com/bridge/dpg/transactions";
         const string LiveHost = "https://api.judopay.com/bridge/dpg/transactions";
 
-        internal DataCashConfiguration()
+        internal JudoPayConfiguration()
         {
         }
 
-        public DataCashConfiguration(PaymentEnvironment environment, string merchantId, string password)
+        public JudoPayConfiguration(PaymentEnvironment environment, string merchantId, string password)
         {
             Environment = environment;
             MerchantId = merchantId;
@@ -56,13 +56,13 @@ namespace Moolah.DataCash
         }
     }
 
-    public class DataCash3DSecureConfiguration : DataCashConfiguration
+    public class JudoPay3DSecureConfiguration : JudoPayConfiguration
     {
-        internal DataCash3DSecureConfiguration()
+        internal JudoPay3DSecureConfiguration()
         {
         }
 
-        public DataCash3DSecureConfiguration(PaymentEnvironment environment, string merchantId, string password,
+        public JudoPay3DSecureConfiguration(PaymentEnvironment environment, string merchantId, string password,
             string merchantUrl, string purchaseDescription, string methodNotificationUrl, string challengeNotificationUrl)
             : base(environment, merchantId, password)
         {

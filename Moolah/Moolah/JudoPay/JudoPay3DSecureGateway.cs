@@ -2,29 +2,29 @@
 using System.IO;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    public class DataCash3DSecureGateway : I3DSecurePaymentGateway
+    public class JudoPay3DSecureGateway : I3DSecurePaymentGateway
     {
-        private readonly DataCash3DSecureConfiguration _configuration;
+        private readonly JudoPay3DSecureConfiguration _configuration;
         private readonly IHttpClient _httpClient;
-        private readonly IDataCashPaymentRequestBuilder _paymentPaymentRequestBuilder;
-        private readonly IDataCashAuthorizeRequestBuilder _authorizeRequestBuilder;
-        private readonly IDataCash3DSecureResponseParser _responseParser;
+        private readonly IJudoPayPaymentRequestBuilder _paymentPaymentRequestBuilder;
+        private readonly IJudoPayAuthorizeRequestBuilder _authorizeRequestBuilder;
+        private readonly IJudoPay3DSecureResponseParser _responseParser;
         private readonly IRefundGateway _refundGateway;
         private readonly ICancelGateway _cancelGateway;
 
-        public DataCash3DSecureGateway(DataCash3DSecureConfiguration configuration, string userAgent, string userAcceptHeader)
-            : this(configuration, new HttpClient(), new DataCash3DSecureRequestBuilder(configuration, userAgent, userAcceptHeader), new DataCash3DSecureAuthorizeRequestBuilder(configuration), new DataCash3DSecureResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
+        public JudoPay3DSecureGateway(JudoPay3DSecureConfiguration configuration, string userAgent, string userAcceptHeader)
+            : this(configuration, new HttpClient(), new JudoPay3DSecureRequestBuilder(configuration, userAgent, userAcceptHeader), new JudoPay3DSecureAuthorizeRequestBuilder(configuration), new JudoPay3DSecureResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
         {
         }
 
-        internal DataCash3DSecureGateway(
-            DataCash3DSecureConfiguration configuration, 
+        internal JudoPay3DSecureGateway(
+            JudoPay3DSecureConfiguration configuration, 
             IHttpClient httpClient, 
-            IDataCashPaymentRequestBuilder paymentRequestBuilder, 
-            IDataCashAuthorizeRequestBuilder authorizeRequestBuilder,
-            IDataCash3DSecureResponseParser responseParser,
+            IJudoPayPaymentRequestBuilder paymentRequestBuilder, 
+            IJudoPayAuthorizeRequestBuilder authorizeRequestBuilder,
+            IJudoPay3DSecureResponseParser responseParser,
             IRefundGateway refundGateway,
             ICancelGateway cancelGateway)
         {

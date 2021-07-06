@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     public interface IRefundGateway
     {
@@ -10,17 +10,17 @@ namespace Moolah.DataCash
 
     public class RefundGateway : IRefundGateway
     {
-        readonly DataCashConfiguration _configuration;
+        readonly JudoPayConfiguration _configuration;
         readonly IHttpClient _httpClient;
-        readonly IDataCashRefundTransactionRequestBuilder _refundRequestBuilder;
+        readonly IJudoPayRefundTransactionRequestBuilder _refundRequestBuilder;
         readonly IRefundTransactionResponseParser _refundResponseParser;
 
-        public RefundGateway(DataCashConfiguration configuration)
+        public RefundGateway(JudoPayConfiguration configuration)
             : this(configuration, new HttpClient(), new RefundTransactionRequestBuilder(configuration), new RefundTransactionResponseParser())
         {
         }
 
-        internal RefundGateway(DataCashConfiguration configuration, IHttpClient httpClient, IDataCashRefundTransactionRequestBuilder refundRequestBuilder, IRefundTransactionResponseParser refundResponseParser)
+        internal RefundGateway(JudoPayConfiguration configuration, IHttpClient httpClient, IJudoPayRefundTransactionRequestBuilder refundRequestBuilder, IRefundTransactionResponseParser refundResponseParser)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (httpClient == null) throw new ArgumentNullException("httpClient");

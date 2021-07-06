@@ -1,5 +1,5 @@
 ﻿using System.Configuration;
-using Moolah.DataCash;
+using Moolah.JudoPay;
 using Moolah.PayPal;
 
 namespace Moolah
@@ -32,16 +32,16 @@ namespace Moolah
         }
 
         [ConfigurationProperty(Elements.DataCashMoTo)]
-        public DataCashConfiguration DataCashMoTo
+        public JudoPayConfiguration JudoPayMoTo
         {
-            get { return (DataCashConfiguration) this[Elements.DataCashMoTo]; }
+            get { return (JudoPayConfiguration) this[Elements.DataCashMoTo]; }
             set { this[Elements.DataCashMoTo] = value; }
         }
 
         [ConfigurationProperty(Elements.DataCash3DSecure)]
-        public DataCash3DSecureConfiguration DataCash3DSecure
+        public JudoPay3DSecureConfiguration JudoPay3DSecure
         {
-            get { return (DataCash3DSecureConfiguration)this[Elements.DataCash3DSecure]; }
+            get { return (JudoPay3DSecureConfiguration)this[Elements.DataCash3DSecure]; }
             set { this[Elements.DataCash3DSecure] = value; }
         }
 

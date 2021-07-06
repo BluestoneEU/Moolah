@@ -4,21 +4,21 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    internal interface IDataCashPaymentRequestBuilder
+    internal interface IJudoPayPaymentRequestBuilder
     {
         XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012);
     }
 
-    internal interface IDataCashRecurringTransactionBuilder
+    internal interface IJudoPayRecurringTransactionBuilder
     {
         XDocument BuildSetupPaymentRequest(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod);
 
         XDocument BuildRepeatPaymentRequest(string merchantReference, string transactionReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = "cont_auth");
     }
 
-    internal interface IDataCashAuthorizeRequestBuilder
+    internal interface IJudoPayAuthorizeRequestBuilder
     {
         XDocument Build(string transactionReference, string PARes);
 
@@ -27,21 +27,21 @@ namespace Moolah.DataCash
         XDocument BuildComplete3DS(string transactionReference, string cvv);
     }
 
-    internal interface IDataCashRefundTransactionRequestBuilder
+    internal interface IJudoPayRefundTransactionRequestBuilder
     {
         XDocument Build(string originalTransactionReference, decimal amount, string captureMethod = null);
     }
 
-    internal interface IDataCashCancelTransactionRequestBuilder
+    internal interface IJudoPayCancelTransactionRequestBuilder
     {
         XDocument Build(string originalTransactionReference);
     }
 
-    internal abstract class DataCashRequestBuilderBase
+    internal abstract class JudoPayRequestBuilderBase
     {
-        private readonly DataCashConfiguration _configuration;
+        private readonly JudoPayConfiguration _configuration;
 
-        public DataCashRequestBuilderBase(DataCashConfiguration configuration)
+        public JudoPayRequestBuilderBase(JudoPayConfiguration configuration)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
             _configuration = configuration;
@@ -62,11 +62,7 @@ namespace Moolah.DataCash
         private XElement authenticationElement()
         {
             return new XElement("Authentication",
-                // new XElement("client", "100658277"),
-                // new XElement("password", "jY7LD2XkhhPoqEVV:295fdcaa4d6d57c035d06164a8771c014595e1b45d146a10d004f9d32d337d7f"));
-                // new XElement("password", "5AbJqGv4JiZ8nMRM:9d9532db27c877c268bcd6875ffc36ac6653391790b43caafb0259bbe791efed"));
-
-            new XElement("client", _configuration.MerchantId),
+                new XElement("client", _configuration.MerchantId),
                                 new XElement("password", _configuration.Password));
         }
 
@@ -74,18 +70,8 @@ namespace Moolah.DataCash
         {
             return new XElement("Transaction", elements);
         }
-
-        protected virtual XElement AddCaptureMethod(XElement txnDetails, string captureMethod)
-        {
-            // if (!string.IsNullOrWhiteSpace(captureMethod))
-            // {
-            //     var cm = new XElement("capturemethod", captureMethod);
-            //     txnDetails.Add(cm);
-            // }
-            return txnDetails;
-        }
-
-        protected virtual XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012, string cardHolder, BillingAddress billingAddress)
+        
+        protected virtual XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, string cardHolder, BillingAddress billingAddress)
         {
             var amountElement = new XElement("amount", amount.ToString("0.00"));
             if (!string.IsNullOrWhiteSpace(currencyCode))
@@ -94,10 +80,7 @@ namespace Moolah.DataCash
             var root = new XElement("TxnDetails",
                 new XElement("merchantreference", merchantReference),
                 amountElement);
-
-            // if (mcc6012 != null)
-            //     root.Add(mcc6012.ToElement());
-
+            
             return root;
         }
 

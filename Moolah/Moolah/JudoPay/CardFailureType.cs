@@ -1,4 +1,4 @@
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     public enum CardFailureType : short
     {

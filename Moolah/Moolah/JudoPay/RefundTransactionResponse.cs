@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    public interface ICancelTransactionResponse : IPaymentResponse
+    public interface IRefundTransactionResponse : IPaymentResponse
     {
     }
 
-    public class CancelTransactionResponse : ICancelTransactionResponse
+    public class RefundTransactionResponse : IRefundTransactionResponse
     {
-        public CancelTransactionResponse(XDocument dataCashResponse)
+        public RefundTransactionResponse(XDocument dataCashResponse)
         {
             if (dataCashResponse == null) throw new ArgumentNullException("dataCashResponse");
             DataCashResponse = dataCashResponse;
@@ -24,5 +24,5 @@ namespace Moolah.DataCash
         public bool IsSystemFailure { get; internal set; }
 
         public string FailureMessage { get; internal set; }
-    }
+   }
 }

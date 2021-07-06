@@ -1,13 +1,13 @@
 ﻿using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     /// <summary>
     /// Builds DataCash request XML to authorize a pending 3D-Secure payment transaction.
     /// </summary>
-    internal class DataCash3DSecureAuthorizeRequestBuilder : DataCashRequestBuilderBase, IDataCashAuthorizeRequestBuilder
+    internal class JudoPay3DSecureAuthorizeRequestBuilder : JudoPayRequestBuilderBase, IJudoPayAuthorizeRequestBuilder
     {
-        public DataCash3DSecureAuthorizeRequestBuilder(DataCashConfiguration configuration)
+        public JudoPay3DSecureAuthorizeRequestBuilder(JudoPayConfiguration configuration)
             : base(configuration)
         {
         }

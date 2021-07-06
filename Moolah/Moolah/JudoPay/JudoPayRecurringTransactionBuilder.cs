@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    internal class DataCashRecurringTransactionBuilder : DataCashRequestBuilderBase, IDataCashRecurringTransactionBuilder
+    internal class JudoPayRecurringTransactionBuilder : JudoPayRequestBuilderBase, IJudoPayRecurringTransactionBuilder
     {
-        public DataCashRecurringTransactionBuilder(DataCashConfiguration configuration)
+        public JudoPayRecurringTransactionBuilder(JudoPayConfiguration configuration)
         : base(configuration)
         {
         }
@@ -17,14 +17,14 @@ namespace Moolah.DataCash
         public XDocument BuildSetupPaymentRequest(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod = "ecomm")
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, card.CardHolder, billingAddress), captureMethod),
+                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, card.CardHolder, billingAddress), captureMethod),
                 CardTxnElement(card, billingAddress, policy), ContAuthTxnElement(false));
         }
 
         public XDocument BuildRepeatPaymentRequest(string merchantReference, string caReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = "cont_auth")
         {
             //TODO
-            var txnDetails = TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, null, null);
+            var txnDetails = TxnDetailsElement(merchantReference, amount, currencyCode, null, null);
             if (!string.IsNullOrWhiteSpace(captureMethod))
                 txnDetails = AddCaptureMethod(txnDetails, captureMethod);
             return GetDocument(txnDetails, HistoricTxnElement("auth", caReference), ContAuthTxnElement(true));

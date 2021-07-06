@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     /// <summary>
     /// Builds the DataCash MoTo request XML.
     /// </summary>
-    internal class DataCashMoToRequestBuilder : DataCashRequestBuilderBase, IDataCashPaymentRequestBuilder
+    internal class JudoPayMoToRequestBuilder : JudoPayRequestBuilderBase, IJudoPayPaymentRequestBuilder
     {
-        public DataCashMoToRequestBuilder(DataCashConfiguration configuration)
+        public JudoPayMoToRequestBuilder(JudoPayConfiguration configuration)
             : base(configuration)
         {
         }
@@ -16,7 +16,7 @@ namespace Moolah.DataCash
         public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012)
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, mcc6012, card.CardHolder, billingAddress), "cnp"),
+                TxnDetailsElement(merchantReference, amount, currencyCode, card.CardHolder, billingAddress),
                 CardTxnElement(card, billingAddress, policy));
         }
     }

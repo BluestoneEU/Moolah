@@ -5,32 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    public class DataCashRecurringTxnGateway : IRecurringPaymentGateway
+    public class JudoPayRecurringTxnGateway : IRecurringPaymentGateway
     {
-        private readonly DataCashConfiguration _configuration;
+        private readonly JudoPayConfiguration _configuration;
         private readonly IHttpClient _httpClient;
-        private readonly IDataCashRecurringTransactionBuilder _paymentRequestBuilder;
-        private readonly IDataCashRecurringPaymentResponseParser _responseParser;
+        private readonly IJudoPayRecurringTransactionBuilder _paymentRequestBuilder;
+        private readonly IJudoPayRecurringPaymentResponseParser _responseParser;
         private readonly IRecurringRefundGateway _refundGateway;
         private readonly ICancelGateway _cancelGateway;
 
-        public DataCashRecurringTxnGateway()
-            : this(MoolahConfiguration.Current.DataCashMoTo)
+        public JudoPayRecurringTxnGateway()
+            : this(MoolahConfiguration.Current.JudoPayMoTo)
         {
         }
 
-        public DataCashRecurringTxnGateway(DataCashConfiguration configuration)
-            : this(configuration, new HttpClient(), new DataCashRecurringTransactionBuilder(configuration), new DataCashRecurringPaymentResponseParser(new DataCashResponseParser()), new DataCashRecurringRefundGateway(configuration), new CancelGateway(configuration))
+        public JudoPayRecurringTxnGateway(JudoPayConfiguration configuration)
+            : this(configuration, new HttpClient(), new JudoPayRecurringTransactionBuilder(configuration), new JudoPayRecurringPaymentResponseParser(new JudoPayResponseParser()), new JudoPayRecurringRefundGateway(configuration), new CancelGateway(configuration))
         {
         }
 
-        internal DataCashRecurringTxnGateway(
-            DataCashConfiguration configuration,
+        internal JudoPayRecurringTxnGateway(
+            JudoPayConfiguration configuration,
             IHttpClient httpClient,
-            IDataCashRecurringTransactionBuilder requestBuilder,
-            IDataCashRecurringPaymentResponseParser responseParser,
+            IJudoPayRecurringTransactionBuilder requestBuilder,
+            IJudoPayRecurringPaymentResponseParser responseParser,
             IRecurringRefundGateway refundGateway,
             ICancelGateway cancelGateway)
         {

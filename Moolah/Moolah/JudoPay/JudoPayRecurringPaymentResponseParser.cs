@@ -5,18 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    internal interface IDataCashRecurringPaymentResponseParser
+    internal interface IJudoPayRecurringPaymentResponseParser
     {
         IRecurringPaymentResponse Parse(string dataCashResponse);
     }
 
-    internal class DataCashRecurringPaymentResponseParser : IDataCashRecurringPaymentResponseParser
+    internal class JudoPayRecurringPaymentResponseParser : IJudoPayRecurringPaymentResponseParser
     {
         //composition-based inheritance
-        private IDataCashResponseParser BaseParser { get; set; }
-        public DataCashRecurringPaymentResponseParser(IDataCashResponseParser baseParser)
+        private IJudoPayResponseParser BaseParser { get; set; }
+        public JudoPayRecurringPaymentResponseParser(IJudoPayResponseParser baseParser)
         {
             BaseParser = baseParser;
         }
@@ -25,7 +25,7 @@ namespace Moolah.DataCash
         {
             string contAuthReference;
             var document = XDocument.Parse(dataCashResponse);
-            var response = new DataCashRecurringPaymentResponse(document);
+            var response = new JudoPayRecurringPaymentResponse(document);
             BaseParser.SetPaymentValues(document, response);
             if (document.TryGetXPathValue("Response/ContAuthTxn/ca_reference", out contAuthReference))
                 response.CAReference = contAuthReference;

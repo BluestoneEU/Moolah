@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
     public interface ICancelGateway
     {
@@ -10,17 +10,17 @@ namespace Moolah.DataCash
 
     public class CancelGateway : ICancelGateway
     {
-        readonly DataCashConfiguration _configuration;
+        readonly JudoPayConfiguration _configuration;
         readonly IHttpClient _httpClient;
-        readonly IDataCashCancelTransactionRequestBuilder _requestBuilder;
+        readonly IJudoPayCancelTransactionRequestBuilder _requestBuilder;
         readonly ICancelTransactionResponseParser _responseParser;
 
-        public CancelGateway(DataCashConfiguration configuration)
+        public CancelGateway(JudoPayConfiguration configuration)
             : this(configuration, new HttpClient(), new CancelTransactionRequestBuilder(configuration), new CancelTransactionResponseParser())
         {
         }
 
-        internal CancelGateway(DataCashConfiguration configuration, IHttpClient httpClient, IDataCashCancelTransactionRequestBuilder requestBuilder, ICancelTransactionResponseParser responseParser)
+        internal CancelGateway(JudoPayConfiguration configuration, IHttpClient httpClient, IJudoPayCancelTransactionRequestBuilder requestBuilder, ICancelTransactionResponseParser responseParser)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (httpClient == null) throw new ArgumentNullException("httpClient");

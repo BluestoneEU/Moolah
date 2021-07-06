@@ -1,8 +1,8 @@
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    public class DataCashFailureReason
+    public class JudoPayFailureReason
     {
-        public DataCashFailureReason(string message, CardFailureType failureType)
+        public JudoPayFailureReason(string message, CardFailureType failureType)
         {
             Message = message;
             Type = failureType;

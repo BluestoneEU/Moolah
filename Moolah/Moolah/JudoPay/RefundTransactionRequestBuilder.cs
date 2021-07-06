@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    internal class RefundTransactionRequestBuilder : DataCashRequestBuilderBase, IDataCashRefundTransactionRequestBuilder
+    internal class RefundTransactionRequestBuilder : JudoPayRequestBuilderBase, IJudoPayRefundTransactionRequestBuilder
     {
-        public RefundTransactionRequestBuilder(DataCashConfiguration configuration)
+        public RefundTransactionRequestBuilder(JudoPayConfiguration configuration)
             : base(configuration)
         {
         }
@@ -13,11 +13,11 @@ namespace Moolah.DataCash
         public XDocument Build(string originalTransactionReference, decimal amount, string captureMethod = null)
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(null, amount, null, null, null, null), captureMethod),
+                TxnDetailsElement(null, amount, null, null, null),
                 HistoricTxnElement(originalTransactionReference));
         }
 
-        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, MCC6012 mcc6012, string cardHolder, BillingAddress billingAddress)
+        protected override XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, string cardHolder, BillingAddress billingAddress)
         {
             return new XElement("TxnDetails", new XElement("amount", amount.ToString("0.00")));
         }

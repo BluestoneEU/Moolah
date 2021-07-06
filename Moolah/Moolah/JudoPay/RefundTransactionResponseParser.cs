@@ -1,19 +1,19 @@
 ﻿using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    internal interface ICancelTransactionResponseParser
+    internal interface IRefundTransactionResponseParser
     {
-        ICancelTransactionResponse Parse(string dataCashResponse);
+        IRefundTransactionResponse Parse(string dataCashResponse);
     }
 
-    internal class CancelTransactionResponseParser : ICancelTransactionResponseParser
+    internal class RefundTransactionResponseParser : IRefundTransactionResponseParser
     {
-        public ICancelTransactionResponse Parse(string dataCashResponse)
+        public IRefundTransactionResponse Parse(string dataCashResponse)
         {
             var document = XDocument.Parse(dataCashResponse);
 
-            var response = new CancelTransactionResponse(document);
+            var response = new RefundTransactionResponse(document);
 
             string transactionReference;
             if (document.TryGetXPathValue("Response/datacash_reference", out transactionReference))

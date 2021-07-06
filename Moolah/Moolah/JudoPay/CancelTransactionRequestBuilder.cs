@@ -1,10 +1,10 @@
 ﻿using System.Xml.Linq;
 
-namespace Moolah.DataCash
+namespace Moolah.JudoPay
 {
-    internal class CancelTransactionRequestBuilder : DataCashRequestBuilderBase, IDataCashCancelTransactionRequestBuilder
+    internal class CancelTransactionRequestBuilder : JudoPayRequestBuilderBase, IJudoPayCancelTransactionRequestBuilder
     {
-        public CancelTransactionRequestBuilder(DataCashConfiguration configuration)
+        public CancelTransactionRequestBuilder(JudoPayConfiguration configuration)
             : base(configuration)
         {
         }
