@@ -11,21 +11,17 @@ namespace Moolah.JudoPay
     internal class JudoPay3DSecureRequestBuilder : JudoPayRequestBuilderBase, IJudoPayPaymentRequestBuilder
     {
         private readonly JudoPay3DSecureConfiguration _configuration;
-        private readonly string _userAgent;
-        private readonly string _acceptHeader;
 
         public ITimeProvider SystemTime { get; set; }
 
-        public JudoPay3DSecureRequestBuilder(JudoPay3DSecureConfiguration configuration, string userAgent, string acceptHeader)
+        public JudoPay3DSecureRequestBuilder(JudoPay3DSecureConfiguration configuration)
             : base(configuration)
         {
             _configuration = configuration;
-            _userAgent = userAgent;
-            _acceptHeader = acceptHeader;
             SystemTime = new TimeProvider();
         }
 
-        public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012)
+        public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress)
         {
             return GetDocument(
                 TxnDetailsElement(merchantReference, amount, currencyCode, card.CardHolder, billingAddress),
@@ -53,26 +49,9 @@ namespace Moolah.JudoPay
         private XElement threeDSecureElement()
         {
             return new XElement("ThreeDSecure",
-                                // new XElement("verify", "yes"),
-                                // new XElement("merchant_url", _configuration.MerchantUrl),
-                                // new XElement("purchase_desc", _configuration.PurchaseDescription),
-                                // new XElement("purchase_datetime", SystemTime.Now.ToString("yyyyMMdd HH:mm:ss")),
                                 new XElement("methodNotificationUrl", _configuration.MethodNotificationUrl),
                                 new XElement("challengeNotificationUrl", _configuration.ChallengeNotificationUrl)
-                                // new XElement("methodNotificationUrl", "https://api.karatepay.com/order/3ds/methodNotification"),
-                                // new XElement("challengeNotificationUrl", "https://api.karatepay.com/order/3ds/challengeNotification")
-                                // <methodNotificationUrl>https://api.karatepay.com/order/3ds/methodNotification</methodNotificationUrl>
-                                // <challengeNotificationUrl>https://api.karatepay.com/order/3ds/challengeNotification</challengeNotificationUrl>
-                                // browserElement()
                                 );
-        }
-
-        private XElement browserElement()
-        {
-            return new XElement("Browser",
-                                new XElement("device_category", "0"),
-                                new XElement("accept_headers", _acceptHeader),
-                                new XElement("user_agent", _userAgent));
         }
     }
 }

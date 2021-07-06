@@ -14,8 +14,8 @@ namespace Moolah.JudoPay
         private readonly IRefundGateway _refundGateway;
         private readonly ICancelGateway _cancelGateway;
 
-        public JudoPay3DSecureGateway(JudoPay3DSecureConfiguration configuration, string userAgent, string userAcceptHeader)
-            : this(configuration, new HttpClient(), new JudoPay3DSecureRequestBuilder(configuration, userAgent, userAcceptHeader), new JudoPay3DSecureAuthorizeRequestBuilder(configuration), new JudoPay3DSecureResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
+        public JudoPay3DSecureGateway(JudoPay3DSecureConfiguration configuration)
+            : this(configuration, new HttpClient(), new JudoPay3DSecureRequestBuilder(configuration), new JudoPay3DSecureAuthorizeRequestBuilder(configuration), new JudoPay3DSecureResponseParser(), new RefundGateway(configuration), new CancelGateway(configuration))
         {
         }
 
@@ -44,11 +44,11 @@ namespace Moolah.JudoPay
             _cancelGateway = cancelGateway;
         }
 
-        public I3DSecureResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null)
+        public I3DSecureResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null)
         {
             if (string.IsNullOrWhiteSpace(merchantReference)) throw new ArgumentNullException("merchantReference");
 
-            var requestDocument = _paymentPaymentRequestBuilder.Build(merchantReference, amount, currencyCode, card, policy, billingAddress, mcc6012);
+            var requestDocument = _paymentPaymentRequestBuilder.Build(merchantReference, amount, currencyCode, card, policy, billingAddress);
             var requestData = requestDocument.ToString(SaveOptions.None);
             var httpResponse = _httpClient.Post(_configuration.Host, requestData);
             var response = _responseParser.Parse(httpResponse);

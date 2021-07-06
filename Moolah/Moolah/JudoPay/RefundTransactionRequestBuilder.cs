@@ -10,7 +10,7 @@ namespace Moolah.JudoPay
         {
         }
 
-        public XDocument Build(string originalTransactionReference, decimal amount, string captureMethod = null)
+        public XDocument Build(string originalTransactionReference, decimal amount)
         {
             return GetDocument(
                 TxnDetailsElement(null, amount, null, null, null),

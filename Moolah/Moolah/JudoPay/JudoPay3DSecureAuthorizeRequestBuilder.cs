@@ -62,33 +62,5 @@ namespace Moolah.JudoPay
                     new XElement("Cv2Avs",
                         new XElement("cv2", cvv))));
         }
-
-        // protected virtual XElement CardElement()
-        // {
-        //     return new XElement("Card",
-        //         Cv2AvsElement());
-        // }
-        //
-        // protected virtual XElement Cv2AvsElement()
-        // {
-        //     if (billingAddress != null)
-        //     {
-        //         var numericAddress = numericPartsOfAddress(billingAddress);
-        //         if (!string.IsNullOrWhiteSpace(numericAddress))
-        //             cv2AvsElements.Add(new XElement("street_address1", numericAddress));
-        //
-        //         var formattedPostcode = formatPostcode(billingAddress.Postcode);
-        //         if (!string.IsNullOrWhiteSpace(formattedPostcode))
-        //             cv2AvsElements.Add(new XElement("postcode", formattedPostcode));
-        //     }
-        //
-        //     // 0 is not a valid per-transaction policy code.
-        //     var cvPolicy = (int)policy;
-        //     if (cvPolicy > 0)
-        //         cv2AvsElements.Add(new XElement("policy", cvPolicy));
-        //
-        //     cv2AvsElements.Add(new XElement("cv2", card.Cv2));
-        //     return new XElement("Cv2Avs", "452");
-        // }
     }
 }

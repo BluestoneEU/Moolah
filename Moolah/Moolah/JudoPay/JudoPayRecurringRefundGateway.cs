@@ -8,7 +8,7 @@ namespace Moolah.JudoPay
 {
     public interface IRecurringRefundGateway : IRefundGateway
     {
-        IRefundTransactionResponse RefundRecurring(string originalTransactionReference, decimal amount, string captureMethod);
+        IRefundTransactionResponse RefundRecurring(string originalTransactionReference, decimal amount);
     }
 
 

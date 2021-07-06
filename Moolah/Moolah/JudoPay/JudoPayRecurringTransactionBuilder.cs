@@ -14,29 +14,19 @@ namespace Moolah.JudoPay
         {
         }
 
-        public XDocument BuildSetupPaymentRequest(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress, MCC6012 mcc6012, string captureMethod = "ecomm")
+        public XDocument BuildSetupPaymentRequest(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress)
         {
             return GetDocument(
-                AddCaptureMethod(TxnDetailsElement(merchantReference, amount, currencyCode, card.CardHolder, billingAddress), captureMethod),
+                TxnDetailsElement(merchantReference, amount, currencyCode, card.CardHolder, billingAddress),
                 CardTxnElement(card, billingAddress, policy), ContAuthTxnElement(false));
         }
 
-        public XDocument BuildRepeatPaymentRequest(string merchantReference, string caReference, decimal amount, string currencyCode, MCC6012 mcc6012, string captureMethod = "cont_auth")
+        public XDocument BuildRepeatPaymentRequest(string merchantReference, string caReference, decimal amount, string currencyCode)
         {
-            //TODO
             var txnDetails = TxnDetailsElement(merchantReference, amount, currencyCode, null, null);
-            if (!string.IsNullOrWhiteSpace(captureMethod))
-                txnDetails = AddCaptureMethod(txnDetails, captureMethod);
             return GetDocument(txnDetails, HistoricTxnElement("auth", caReference), ContAuthTxnElement(true));
         }
-
-        private XElement AddCaptureMethod(XElement txnDetails, string captureMethod)
-        {
-            var cm = new XElement("capturemethod", captureMethod);
-            txnDetails.Add(cm);
-            return txnDetails;
-        }
-
+        
         private XElement ContAuthTxnElement(bool historic)
         {
             var contAuthTxn = new XElement("ContAuthTxn");

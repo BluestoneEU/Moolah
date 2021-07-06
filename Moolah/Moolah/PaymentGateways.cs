@@ -14,7 +14,7 @@ namespace Moolah
         /// <param name="amount">The amount to transact.</param>
         /// <param name="card">Credit or debit card details.</param>
         /// <param name="billingAddress">The billing address for the card.  If provided, then address verifications checks are run.</param>
-        ICardPaymentResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null);
+        ICardPaymentResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null);
     }
 
     public interface IRecurringPaymentGateway : ICanRefundTransactions, ICanCancelTransactions
@@ -27,30 +27,24 @@ namespace Moolah
         /// <param name="amount">The amount to transact.</param>
         /// <param name="card">Credit or debit card details.</param>
         /// <param name="billingAddress">The billing address for the card.  If provided, then address verifications checks are run.</param>
-        /// <param name="captureMethod">The capture method for the transaction. "ecomm" or "cnp", as per the datacash documentation.
-        /// ecomm - the transaction is to be processed using the e-Commerce MID
-        /// cnp - to be processed using the MoTo MID </param>
         /// <returns>A card payment response, which additionally contains a Continuous Authority (CA) reference</returns>
-        IRecurringPaymentResponse SetupPayment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "ecomm");
+        IRecurringPaymentResponse SetupPayment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null);
 
         /// <summary>
         /// Performs a recurring payment using the Continuous Authority reference obtained from a setup payment.
         /// </summary>
         /// <param name="merchantReference">The merchant's reference for the transaction.</param>
         /// <param name="caReference">Continuous Authority reference obtained in the setup Payment </param>
-        /// <param name="captureMethod">The capture method for the transaction. For recurring transactions, this should normally be set to "cont_auth".</param>
         /// <returns>Payment response</returns>
-        IRecurringPaymentResponse RepeatPayment(string merchantReference, string caReference, decimal amount, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "cont_auth");
+        IRecurringPaymentResponse RepeatPayment(string merchantReference, string caReference, decimal amount, string currencyCode = null);
 
         /// <summary>
         /// Refunds a repeat transaction
         /// </summary>
         /// <param name="originalTransactionReference">The original transaction reference</param>
         /// <param name="amount">The amount to refund. Must be less than or equal to the original amount</param>
-        /// <param name="refund">When refunding a CA transaction (ie. a repeat payment), you MUST specify a capture method,
-        /// as the original capture method for the transaction "cont_auth" is non-refundable.</param>
         /// <returns></returns>
-        IRefundTransactionResponse RefundRepeatTransaction(string originalTransactionReference, decimal amount, string captureMethod = "ecomm");
+        IRefundTransactionResponse RefundRepeatTransaction(string originalTransactionReference, decimal amount);
     }
 
     public interface I3DSecurePaymentGateway : ICanRefundTransactions, ICanCancelTransactions
@@ -64,7 +58,7 @@ namespace Moolah
         /// <param name="amount">The amount to transact.</param>
         /// <param name="card">Card details.</param>
         /// <param name="billingAddress">The billing address for the card.  If provided, then address verifications checks are run.</param>
-        I3DSecureResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null);
+        I3DSecureResponse Payment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null);
 
         /// <summary>
         /// Attempts to authorise a 3D-Secure transaction previously submitted to the <see cref="Payment"/> method.

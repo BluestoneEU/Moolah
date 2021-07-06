@@ -53,16 +53,16 @@ namespace Moolah.JudoPay
            return _cancelGateway.Cancel(originalTransactionReference);
         }
 
-        public IRecurringPaymentResponse SetupPayment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "ecomm")
+        public IRecurringPaymentResponse SetupPayment(string merchantReference, decimal amount, CardDetails card, BillingAddress billingAddress = null, Cv2AvsPolicy policy = Cv2AvsPolicy.UNSPECIFIED, string currencyCode = null)
         {
-            var requestDocument = _paymentRequestBuilder.BuildSetupPaymentRequest(merchantReference, amount, currencyCode, card, policy, billingAddress, mcc6012, captureMethod);
+            var requestDocument = _paymentRequestBuilder.BuildSetupPaymentRequest(merchantReference, amount, currencyCode, card, policy, billingAddress);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _responseParser.Parse(response);
         }
 
-        public IRecurringPaymentResponse RepeatPayment(string merchantReference, string contAuthReference, decimal amount, string currencyCode = null, MCC6012 mcc6012 = null, string captureMethod = "cont_auth")
+        public IRecurringPaymentResponse RepeatPayment(string merchantReference, string contAuthReference, decimal amount, string currencyCode = null)
         {
-            var requestDocument = _paymentRequestBuilder.BuildRepeatPaymentRequest(merchantReference,contAuthReference, amount, currencyCode, mcc6012, captureMethod);
+            var requestDocument = _paymentRequestBuilder.BuildRepeatPaymentRequest(merchantReference,contAuthReference, amount, currencyCode);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _responseParser.Parse(response);
         }
@@ -73,9 +73,9 @@ namespace Moolah.JudoPay
         }
 
 
-        public IRefundTransactionResponse RefundRepeatTransaction(string originalTransactionReference, decimal amount, string captureMethod = "ecomm")
+        public IRefundTransactionResponse RefundRepeatTransaction(string originalTransactionReference, decimal amount)
         {
-            return _refundGateway.RefundRecurring(originalTransactionReference, amount, captureMethod);
+            return _refundGateway.RefundRecurring(originalTransactionReference, amount);
         }
     }
 }

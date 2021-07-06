@@ -5,9 +5,6 @@ namespace Moolah.JudoPay
 {
     public class JudoPayConfiguration : ConfigurationElement
     {
-        // const string TestHost = "https://testserver.datacash.com/Transaction";
-        // const string LiveHost = "https://mars.transaction.datacash.com/Transaction";
-
         const string TestHost = "https://api-sandbox.judopay.com/bridge/dpg/transactions";
         const string LiveHost = "https://api.judopay.com/bridge/dpg/transactions";
 
@@ -97,8 +94,6 @@ namespace Moolah.JudoPay
         /// The URL for the additional client information request.  
         /// This is used to send a hidden request with client information during the 3D-Secure authentication process.
         /// </summary>
-        // public string MethodNotificationUrl => "https://api.karatepay.com/order/3ds/methodNotification";
-        // public string MethodNotificationUrl => "https://localhost:5001/threeDSecureNotification/methodNotification";
         [ConfigurationProperty(Attributes.MethodNotificationUrl)]
         public string MethodNotificationUrl 
         { 
@@ -110,8 +105,6 @@ namespace Moolah.JudoPay
         /// The URL with the challenge page.  
         /// This is displayed to the customer by the bank during the 3D-Secure authentication process.
         /// </summary>
-        // public string ChallengeNotificationUrl => "https://api.karatepay.com/order/3ds/challengeNotification";
-        // public string ChallengeNotificationUrl => "https://localhost:5001/threeDSecureNotification/challengeNotification";
         [ConfigurationProperty(Attributes.ChallengeNotificationUrl)]
         public string ChallengeNotificationUrl 
         { 

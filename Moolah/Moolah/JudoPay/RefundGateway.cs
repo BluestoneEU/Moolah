@@ -34,17 +34,17 @@ namespace Moolah.JudoPay
 
         public IRefundTransactionResponse Refund(string originalTransactionReference, decimal amount)
         {
-            return RefundSingleOrRecurring(originalTransactionReference, amount, null);
+            return RefundSingleOrRecurring(originalTransactionReference, amount);
         }
 
-        public IRefundTransactionResponse RefundRecurring(string originalTransactionReference, decimal amount, string captureMethod = null)
+        public IRefundTransactionResponse RefundRecurring(string originalTransactionReference, decimal amount)
         {
-            return RefundSingleOrRecurring(originalTransactionReference, amount, captureMethod);
+            return RefundSingleOrRecurring(originalTransactionReference, amount);
         }
 
-        private IRefundTransactionResponse RefundSingleOrRecurring(string originalTransactionReference, decimal amount, string captureMethod)
+        private IRefundTransactionResponse RefundSingleOrRecurring(string originalTransactionReference, decimal amount)
         {
-            var requestDocument = _refundRequestBuilder.Build(originalTransactionReference, amount, captureMethod);
+            var requestDocument = _refundRequestBuilder.Build(originalTransactionReference, amount);
             var response = _httpClient.Post(_configuration.Host, requestDocument.ToString(SaveOptions.DisableFormatting));
             return _refundResponseParser.Parse(response);
         }
