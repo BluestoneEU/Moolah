@@ -23,7 +23,7 @@ namespace Moolah.JudoPay
         XDocument Build(string transactionReference, string PARes);
 
         XDocument BuildResume3DS(string transactionReference, string cvv);
-        
+
         XDocument BuildComplete3DS(string transactionReference, string cvv);
     }
 
@@ -70,17 +70,17 @@ namespace Moolah.JudoPay
         {
             return new XElement("Transaction", elements);
         }
-        
+
         protected virtual XElement TxnDetailsElement(string merchantReference, decimal amount, string currencyCode, string cardHolder, BillingAddress billingAddress)
         {
             var amountElement = new XElement("amount", amount.ToString("0.00"));
             if (!string.IsNullOrWhiteSpace(currencyCode))
                 amountElement.Add(new XAttribute("currency", currencyCode));
-            
+
             var root = new XElement("TxnDetails",
                 new XElement("merchantreference", merchantReference),
                 amountElement);
-            
+
             return root;
         }
 
@@ -105,19 +105,12 @@ namespace Moolah.JudoPay
             if (billingAddress != null)
             {
                 cv2AvsElements.Add(new XElement("street_address1", billingAddress.StreetAddress1));
-                cv2AvsElements.Add(new XElement("street_address2", billingAddress.StreetAddress2));
-                cv2AvsElements.Add(new XElement("street_address3", billingAddress.StreetAddress3));
-                cv2AvsElements.Add(new XElement("street_address4", billingAddress.StreetAddress4));
-                
-                cv2AvsElements.Add(new XElement("city", billingAddress.City));
-                cv2AvsElements.Add(new XElement("state_province", billingAddress.State));
-                cv2AvsElements.Add(new XElement("country", "826"));
 
                 var formattedPostcode = formatPostcode(billingAddress.Postcode);
                 if (!string.IsNullOrWhiteSpace(formattedPostcode))
                     cv2AvsElements.Add(new XElement("postcode", formattedPostcode));
             }
-            
+
             cv2AvsElements.Add(new XElement("cv2", card.Cv2));
             return new XElement("Cv2Avs", cv2AvsElements.ToArray());
         }

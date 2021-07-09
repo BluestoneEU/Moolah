@@ -21,7 +21,7 @@ namespace Moolah.JudoPay
             SystemTime = new TimeProvider();
         }
 
-        public XDocument Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress)
+        public XDocument  Build(string merchantReference, decimal amount, string currencyCode, CardDetails card, Cv2AvsPolicy policy, BillingAddress billingAddress)
         {
             return GetDocument(
                 TxnDetailsElement(merchantReference, amount, currencyCode, card.CardHolder, billingAddress),
@@ -41,11 +41,11 @@ namespace Moolah.JudoPay
         {
             return new XElement("CustomerInfo",
                 new XElement("cardHolderName", cardHolder),
-                new XElement("mobileNumber", billingAddress.PhoneNumber),
+                new XElement("mobileNumber", billingAddress.PhoneNumber.Replace(billingAddress.PhoneCountryCode, string.Empty)),
                 new XElement("emailAddress", billingAddress.Email),
-                new XElement("phoneCountryCode", "44"));
+                new XElement("phoneCountryCode", billingAddress.PhoneCountryCode));
         }
-        
+
         private XElement threeDSecureElement()
         {
             return new XElement("ThreeDSecure",

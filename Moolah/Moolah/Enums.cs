@@ -38,5 +38,6 @@ namespace Moolah
         Pending = 1,
         Successful = 2,
         Failed = 3,
+        ThreeDSecure = 4,
     }
 }
